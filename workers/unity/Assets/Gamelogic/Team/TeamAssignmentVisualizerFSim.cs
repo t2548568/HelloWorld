@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Team
 {
-    [EngineType(EnginePlatform.FSim)]
+    [WorkerType(WorkerPlatform.UnityWorker)]
     public class TeamAssignmentVisualizerFSim : MonoBehaviour
     {
         [Require] private TeamAssignment.Reader teamAssignmentReader;

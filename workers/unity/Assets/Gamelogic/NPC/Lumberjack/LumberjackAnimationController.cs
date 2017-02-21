@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.NPC.Lumberjack
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class LumberjackAnimationController : MonoBehaviour
     {
         [Require] private NPCLumberjack.Reader npcLumberjack;

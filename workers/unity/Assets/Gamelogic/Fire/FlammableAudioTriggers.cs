@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Fire
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class FlammableAudioTriggers : MonoBehaviour
     {
         [Require] private Flammable.Reader flammable;

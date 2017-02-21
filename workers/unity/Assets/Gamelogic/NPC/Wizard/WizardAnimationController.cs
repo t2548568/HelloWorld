@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.NPC.Wizard
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class WizardAnimationController : MonoBehaviour {
 
         [Require] private NPCWizard.Reader npcWizard;

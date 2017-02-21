@@ -47,7 +47,7 @@ namespace Assets.Gamelogic.NPC
             for (var nearbyColliderIndex = 0; nearbyColliderIndex < gameObjectCount; nearbyColliderIndex++)
             {
                 var targetObject = nearbyColliders[nearbyColliderIndex].gameObject;
-                if (!targetObject.IsEntityObject())
+                if (!targetObject.IsSpatialOsEntity())
                 {
                     continue;
                 }

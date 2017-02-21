@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Tree
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class TreeModelVisualizer : MonoBehaviour
     {
         [Require] private TreeState.Reader treeState;

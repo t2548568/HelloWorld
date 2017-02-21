@@ -69,7 +69,7 @@ namespace Assets.Gamelogic.NPC.Wizard
             var targetGameObject = NPCUtils.GetTargetGameObject(Owner.Data.targetEntityId);
             if (targetGameObject == null)
             {
-                Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, EntityId.InvalidEntityId, SimulationSettings.InvalidPosition);
+				Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, new EntityId(), SimulationSettings.InvalidPosition);
                 return;
             }
             if (NPCUtils.IsWithinInteractionRange(parentBehaviour.transform.position, targetGameObject.transform.position, SimulationSettings.NPCWizardSpellCastingSqrDistance))
@@ -85,7 +85,7 @@ namespace Assets.Gamelogic.NPC.Wizard
             var targetPosition = Owner.Data.targetPosition.ToVector3();
             if (MathUtils.CompareEqualityEpsilon(targetPosition, SimulationSettings.InvalidPosition))
             {
-                Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, EntityId.InvalidEntityId, SimulationSettings.InvalidPosition);
+                Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, new EntityId(), SimulationSettings.InvalidPosition);
                 return;
             }
             navigation.StartNavigation(targetPosition, SimulationSettings.NPCDefaultInteractionSqrDistance);
@@ -94,7 +94,7 @@ namespace Assets.Gamelogic.NPC.Wizard
         private void CheckForNearbyEnemiesOrAllies()
         {
             var nearestTarget = FindNearestTargetToAttackOrDefend();
-            if (EntityId.IsValidEntityId(nearestTarget))
+            if (nearestTarget.IsValid())
             {
                 if (!TargetIsEntity() || nearestTarget != Owner.Data.targetEntityId)
                 {
@@ -111,7 +111,7 @@ namespace Assets.Gamelogic.NPC.Wizard
 
             if (nearestDefendableTarget == null && nearestAttackableTarget == null)
             {
-                return EntityId.InvalidEntityId;
+				return new EntityId();
             }
 
             var sqrDistanceToNearestDefendableTarget = (nearestDefendableTarget != null) ? MathUtils.SqrDistance(parentBehaviour.transform.position, nearestDefendableTarget.transform.position) : float.MaxValue;
@@ -125,7 +125,7 @@ namespace Assets.Gamelogic.NPC.Wizard
             var targetGameObject = NPCUtils.GetTargetGameObject(Owner.Data.targetEntityId);
             if (targetGameObject == null)
             {
-                Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, EntityId.InvalidEntityId, SimulationSettings.InvalidPosition);
+				Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, new EntityId(), SimulationSettings.InvalidPosition);
                 return;
             }
             if (NPCUtils.IsTargetAttackable(parentBehaviour.gameObject, targetGameObject) &&
@@ -140,7 +140,7 @@ namespace Assets.Gamelogic.NPC.Wizard
                 Owner.TriggerTransition(WizardFSMState.StateEnum.DEFENDING_TARGET, Owner.Data.targetEntityId, SimulationSettings.InvalidPosition);
                 return;
             }
-            Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, EntityId.InvalidEntityId, SimulationSettings.InvalidPosition);
+			Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, new EntityId(), SimulationSettings.InvalidPosition);
         }
         
         private void OnTargetNavigationUpdated(TargetNavigation.Update update)
@@ -153,14 +153,14 @@ namespace Assets.Gamelogic.NPC.Wizard
                 }
                 else
                 {
-                    Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, EntityId.InvalidEntityId, SimulationSettings.InvalidPosition);
+					Owner.TriggerTransition(WizardFSMState.StateEnum.IDLE, new EntityId(), SimulationSettings.InvalidPosition);
                 }
             }
         }
 
         private bool TargetIsEntity()
         {
-            return EntityId.IsValidEntityId(Owner.Data.targetEntityId);
+            return Owner.Data.targetEntityId.IsValid();
         }
     }
 }

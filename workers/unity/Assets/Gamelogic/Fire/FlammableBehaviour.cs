@@ -11,7 +11,7 @@ using Improbable.Unity;
 
 namespace Assets.Gamelogic.Fire
 {
-    [EngineType(EnginePlatform.FSim)]
+    [WorkerType(WorkerPlatform.UnityWorker)]
     public class FlammableBehaviour : MonoBehaviour
     {
         [Require] private Flammable.Writer flammable;

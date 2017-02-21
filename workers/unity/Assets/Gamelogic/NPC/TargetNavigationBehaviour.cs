@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.NPC
 {
-    [EngineType(EnginePlatform.FSim)]
+    [WorkerType(WorkerPlatform.UnityWorker)]
     public class TargetNavigationBehaviour : MonoBehaviour
     {
         [Require] private TargetNavigation.Writer targetNavigation;
@@ -37,7 +37,7 @@ namespace Assets.Gamelogic.NPC
             targetNavigation.Send(new TargetNavigation.Update()
                 .SetNavigationState(NavigationState.POSITION)
                 .SetTargetPosition(flatPosition.ToVector3f())
-                .SetTargetEntityId(EntityId.InvalidEntityId)
+				.SetTargetEntityId(new EntityId())
                 .SetInteractionSqrDistance(interactionSqrDistance));
         }
 
@@ -57,7 +57,7 @@ namespace Assets.Gamelogic.NPC
                 targetNavigation.Send(new TargetNavigation.Update()
                     .SetNavigationState(NavigationState.INACTIVE)
                     .SetTargetPosition(SimulationSettings.InvalidPosition.ToVector3f())
-                    .SetTargetEntityId(EntityId.InvalidEntityId)
+					.SetTargetEntityId(new EntityId())
                     .SetInteractionSqrDistance(0f));
             }
         }

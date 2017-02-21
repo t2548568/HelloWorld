@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Core
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class CharacterModelVisualizer : MonoBehaviour
     {
         [SerializeField] private GameObject Model;

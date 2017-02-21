@@ -10,7 +10,7 @@ using Improbable.Unity.Visualizer;
 
 namespace Assets.Gamelogic.Core
 {
-    [EngineType(EnginePlatform.FSim)]
+    [WorkerType(WorkerPlatform.UnityWorker)]
     public class HeartbeatReceiver : MonoBehaviour
     {
         [Require] private Heartbeat.Writer heartbeat;
@@ -27,7 +27,6 @@ namespace Assets.Gamelogic.Core
 
         private void OnDisable()
         {
-            entityIdCache = EntityId.InvalidEntityId;
             heartbeat.CommandReceiver.OnHeartbeat -= OnHeartbeat;
             StopCoroutine(heartbeatCoroutine);
         }

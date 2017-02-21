@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Abilities
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class SpellsRequester : MonoBehaviour
     {
         [Require] private ClientAuthorityCheck.Writer clientAuthorityCheck;

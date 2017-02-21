@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Communication
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class ChatVisualizer : MonoBehaviour
     {
         [Require] private Chat.Reader chat;

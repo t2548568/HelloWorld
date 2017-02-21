@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.HQ
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class HQHealthReporterBehaviour : MonoBehaviour
     {
         [Require] private Health.Reader health;

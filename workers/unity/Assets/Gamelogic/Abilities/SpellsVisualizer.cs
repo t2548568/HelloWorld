@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Abilities
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class SpellsVisualizer : MonoBehaviour
     {
         [Require] private Spells.Reader spells;

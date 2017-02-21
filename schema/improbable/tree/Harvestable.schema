@@ -10,5 +10,5 @@ type HarvestResponse {
 
 component Harvestable {
   id = 1601;
-  command HarvestRequest harvest returns HarvestResponse;
+  command HarvestResponse harvest(HarvestRequest);
 }

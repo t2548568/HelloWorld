@@ -12,7 +12,7 @@ using Assets.Gamelogic.ComponentExtensions;
 
 namespace Assets.Gamelogic.Fire
 {
-    [EngineType(EnginePlatform.FSim)]
+    [WorkerType(WorkerPlatform.UnityWorker)]
     class FireHealthInteractionBehaviour : MonoBehaviour
     {
         [Require] private Health.Writer health;

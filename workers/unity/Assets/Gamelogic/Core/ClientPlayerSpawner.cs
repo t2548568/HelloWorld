@@ -15,7 +15,7 @@ namespace Assets.Gamelogic.Core
     /// </summary>
     public static class ClientPlayerSpawner
     {
-        public static EntityId SimulationManagerEntityId = EntityId.InvalidEntityId;
+		public static EntityId SimulationManagerEntityId;
 
         public static void SpawnPlayer()
         {
@@ -24,7 +24,7 @@ namespace Assets.Gamelogic.Core
 
         public static void DeletePlayer()
         {
-            if (EntityId.IsValidEntityId(SimulationManagerEntityId))
+			if (SimulationManagerEntityId.IsValid())
             {
                 SpatialOS.Connection.SendCommandRequest(SimulationManagerEntityId, new PlayerLifeCycle.Commands.DeletePlayer.Request(new DeletePlayerRequest()), null);
             }
@@ -32,7 +32,7 @@ namespace Assets.Gamelogic.Core
 
         private static void FindSimulationManagerEntityId(Action<EntityId> callback)
         {
-		    if (EntityId.IsValidEntityId(SimulationManagerEntityId))
+			if (SimulationManagerEntityId.IsValid())
 		    {
                 callback.Invoke(SimulationManagerEntityId);
 		        return;

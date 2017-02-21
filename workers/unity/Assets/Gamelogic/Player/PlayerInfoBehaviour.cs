@@ -14,7 +14,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Player
 {
-    [EngineType(EnginePlatform.FSim)]
+    [WorkerType(WorkerPlatform.UnityWorker)]
     public class PlayerInfoBehaviour : MonoBehaviour
     {
         [Require] private PlayerInfo.Writer playerInfo;

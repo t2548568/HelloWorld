@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Player
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class PlayerInfoVisualizer : MonoBehaviour
     {
         [Require] private ClientAuthorityCheck.Writer clientAuthorityCheck;

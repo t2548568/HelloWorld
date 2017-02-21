@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Assets.Gamelogic.Communication
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class NotificationController : MonoBehaviour
     {
         private Coroutine timeoutCoroutine;

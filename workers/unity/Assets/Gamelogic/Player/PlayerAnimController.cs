@@ -9,7 +9,7 @@ using Improbable.Unity.Visualizer;
 
 namespace Assets.Gamelogic.Player
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class PlayerAnimController : MonoBehaviour
     {
         [Require] private Spells.Reader spells;

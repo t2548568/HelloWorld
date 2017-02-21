@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Core
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class CharacterDeathVisualizer : MonoBehaviour
     {
         [Require] private Health.Reader health;

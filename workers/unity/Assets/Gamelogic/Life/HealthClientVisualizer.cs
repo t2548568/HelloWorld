@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Life
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class HealthClientVisualizer : MonoBehaviour
     {
         [Require] private Health.Reader health;

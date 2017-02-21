@@ -18,13 +18,13 @@ namespace Assets.Gamelogic.Core
 
             Time.fixedDeltaTime = 1.0f / SimulationSettings.FixedFramerate;
 
-            switch (SpatialOS.Configuration.EnginePlatform)
+            switch (SpatialOS.Configuration.WorkerPlatform)
             {
-                case EnginePlatform.FSim:
+                case WorkerPlatform.UnityWorker:
                     Application.targetFrameRate = SimulationSettings.TargetFramerateFSim;
                     SpatialOS.OnDisconnected += reason => Application.Quit();
                     break;
-                case EnginePlatform.Client:
+                case WorkerPlatform.UnityClient:
                     Application.targetFrameRate = SimulationSettings.TargetFramerate;
                     SpatialOS.OnConnected += ClientPlayerSpawner.SpawnPlayer;
                     break;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Assets.Gamelogic.Communication
 {
-    [EngineType(EnginePlatform.Client)]
+    [WorkerType(WorkerPlatform.UnityClient)]
     public class NotificationRotator : MonoBehaviour
     {
         private void LateUpdate()
