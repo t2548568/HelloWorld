@@ -5,8 +5,8 @@
 *****
 
 Copyright Improbable 2017
-* Link to docs/blog: only if these docs/blog exist.
-* GitHub Repository: github.com/spatialos/Project-Name-Here
+* Link to docs/blog: https://spatialos.improbable.io/docs/reference/latest/tutorials/helloworld/hello-world.
+* GitHub Repository: https://github.com/spatialos/HelloWorld/
 
 *****
 
@@ -24,6 +24,6 @@ The main documentation for SpatialOS can be found by clicking on [this link](htt
 * Make sure you have access to SpatialOS
 * Clone the repo: `git clone https://github.com/spatialos/helloworld`
 * Move into the directory: `cd helloworld`
-* Build the project: `spatial build`
-* Run: `spatial local start`
-* Connect multiple player clients: `spatial worker launch UnityClient default`
+* Build the project: `spatial worker build`
+* Run: `spatial local launch`
+* Connect multiple player clients: `spatial local worker launch UnityClient default`
