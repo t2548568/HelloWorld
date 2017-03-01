@@ -28,12 +28,12 @@ namespace Assets.Gamelogic.Communication
 
         private void OnEnable()
         {
-            chat.ComponentUpdated += ComponentUpdated;
+            chat.ComponentUpdated.Add(ComponentUpdated);
         }
 
         private void OnDisable()
         {
-            chat.ComponentUpdated -= ComponentUpdated;
+            chat.ComponentUpdated.Remove(ComponentUpdated);
 
             if (notification != null)
             {

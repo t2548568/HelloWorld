@@ -29,7 +29,7 @@ namespace Assets.Gamelogic.NPC.Lumberjack
 
         public override void Enter()
         {
-            targetNavigation.ComponentUpdated += OnTargetNavigationUpdated;
+            targetNavigation.ComponentUpdated.Add(OnTargetNavigationUpdated);
             StartMovingTowardsTarget();
         }
 
@@ -39,7 +39,7 @@ namespace Assets.Gamelogic.NPC.Lumberjack
 
         public override void Exit(bool disabled)
         {
-            targetNavigation.ComponentUpdated -= OnTargetNavigationUpdated;
+            targetNavigation.ComponentUpdated.Remove(OnTargetNavigationUpdated);
             StopInteractionWithTargetDelayCoroutine();
         }
 

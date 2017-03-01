@@ -17,12 +17,12 @@ namespace Assets.Gamelogic.Building
         private void OnEnable()
         {
             SwitchToBarracksState(barracksInfo.Data.barracksState);
-            barracksInfo.ComponentUpdated += OnComponentUpdated;
+            barracksInfo.ComponentUpdated.Add(OnComponentUpdated);
         }
 
         private void OnDisable()
         {
-            barracksInfo.ComponentUpdated -= OnComponentUpdated;
+            barracksInfo.ComponentUpdated.Remove(OnComponentUpdated);
         }
 
         private void OnComponentUpdated(BarracksInfo.Update update)

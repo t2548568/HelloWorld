@@ -25,12 +25,12 @@ namespace Assets.Gamelogic.Core
 
         private void OnEnable()
         {
-            transformComponent.ComponentUpdated += OnTransformComponentUpdated;
+            transformComponent.ComponentUpdated.Add(OnTransformComponentUpdated);
         }
 
         private void OnDisable()
         {
-            transformComponent.ComponentUpdated -= OnTransformComponentUpdated;
+            transformComponent.ComponentUpdated.Remove(OnTransformComponentUpdated);
         }
 
         private void OnTransformComponentUpdated(TransformComponent.Update update)

@@ -23,16 +23,16 @@ namespace Assets.Gamelogic.Global
 
         private void OnEnable()
         {
-            playerLifeCycle.CommandReceiver.OnSpawnPlayer += OnSpawnPlayer;
-            playerLifeCycle.CommandReceiver.OnDeletePlayer += OnDeletePlayer;
+            playerLifeCycle.CommandReceiver.OnSpawnPlayer.RegisterResponse(OnSpawnPlayer);
+            playerLifeCycle.CommandReceiver.OnDeletePlayer.RegisterResponse(OnDeletePlayer);
 
             playerEntityIds = new Map<string, EntityId>(playerLifeCycle.Data.playerEntityIds);
         }
 
         private void OnDisable()
         {
-            playerLifeCycle.CommandReceiver.OnSpawnPlayer -= OnSpawnPlayer;
-            playerLifeCycle.CommandReceiver.OnDeletePlayer -= OnDeletePlayer;
+            playerLifeCycle.CommandReceiver.OnSpawnPlayer.DeregisterResponse();
+            playerLifeCycle.CommandReceiver.OnDeletePlayer.DeregisterResponse();
 
             playerEntityIds = null;
         }
@@ -44,24 +44,23 @@ namespace Assets.Gamelogic.Global
             playerLifeCycle.Send(update);
         }
 
-        private void OnSpawnPlayer(ResponseHandle<PlayerLifeCycle.Commands.SpawnPlayer, SpawnPlayerRequest, Nothing> responseHandle)
+        private Nothing OnSpawnPlayer(SpawnPlayerRequest Request, ICommandCallerInfo CallerInfo)
         {
             // Check if we already have a player, or request for a player
-            if (playerEntityIds.ContainsKey(responseHandle.CallerInfo.CallerWorkerId))
+            if (playerEntityIds.ContainsKey(CallerInfo.CallerWorkerId))
             {
-                responseHandle.Respond(new Nothing());
-                return;
+                return new Nothing();
             }
 
             // Mark as requested
-			playerEntityIds.Add(responseHandle.CallerInfo.CallerWorkerId, new EntityId());
+			playerEntityIds.Add(CallerInfo.CallerWorkerId, new EntityId());
 
             // Request Id
-            RequestPlayerEntityId(responseHandle.CallerInfo.CallerWorkerId);
+            RequestPlayerEntityId(CallerInfo.CallerWorkerId);
 
             // Respond
             SendMapUpdate();
-            responseHandle.Respond(new Nothing());
+            return new Nothing();
         }
 
         private void RequestPlayerEntityId(string workerId)
@@ -104,11 +103,11 @@ namespace Assets.Gamelogic.Global
             });
         }
 
-        private void OnDeletePlayer(ResponseHandle<PlayerLifeCycle.Commands.DeletePlayer, DeletePlayerRequest, Nothing> responseHandle)
+        private Nothing OnDeletePlayer(DeletePlayerRequest Request, ICommandCallerInfo CallerInfo)
         {
-            if (playerEntityIds.ContainsKey(responseHandle.CallerInfo.CallerWorkerId))
+            if (playerEntityIds.ContainsKey(CallerInfo.CallerWorkerId))
             {
-                var entityId = playerEntityIds[responseHandle.CallerInfo.CallerWorkerId];
+                var entityId = playerEntityIds[CallerInfo.CallerWorkerId];
                 if (entityId.IsValid())
                 {
 
@@ -122,10 +121,10 @@ namespace Assets.Gamelogic.Global
                         }
                     });
                 }
-                playerEntityIds.Remove(responseHandle.CallerInfo.CallerWorkerId);
+                playerEntityIds.Remove(CallerInfo.CallerWorkerId);
                 SendMapUpdate();
             }
-            responseHandle.Respond(new Nothing());
+            return new Nothing();
         }
     }
 }

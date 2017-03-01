@@ -22,12 +22,12 @@ namespace Assets.Gamelogic.HQ
 
         private void OnEnable()
         {
-            health.ComponentUpdated += OnHealthUpdated;
+            health.ComponentUpdated.Add(OnHealthUpdated);
         }
 
         private void OnDisable()
         {
-            health.ComponentUpdated -= OnHealthUpdated;
+            health.ComponentUpdated.Remove(OnHealthUpdated);
         }
 
         private void OnHealthUpdated(Health.Update update)

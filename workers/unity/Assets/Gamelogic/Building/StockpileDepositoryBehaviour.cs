@@ -3,6 +3,7 @@ using Assets.Gamelogic.Core;
 using Assets.Gamelogic.Life;
 using Improbable.Building;
 using Improbable.Core;
+using Improbable.Entity.Component;
 using Improbable.Life;
 using Improbable.Unity.Visualizer;
 using UnityEngine;
@@ -16,21 +17,21 @@ namespace Assets.Gamelogic.Building
 
         private void OnEnable ()
         { 
-            stockpileDepository.CommandReceiver.OnAddResource += OnAddResource;
+            stockpileDepository.CommandReceiver.OnAddResource.RegisterResponse(OnAddResource);
         }
 
         private void OnDisable()
         {
-            stockpileDepository.CommandReceiver.OnAddResource -= OnAddResource;
+            stockpileDepository.CommandReceiver.OnAddResource.DeregisterResponse();
         }
 
-        private void OnAddResource(Improbable.Entity.Component.ResponseHandle<StockpileDepository.Commands.AddResource, AddResource, Improbable.Core.Nothing> request)
+        private Nothing OnAddResource(AddResource Request, ICommandCallerInfo CallerInfo)
         {
             if (stockpileDepository.Data.canAcceptResources)
             {
-                health.AddCurrentHealthDelta(request.Request.quantity);
+                health.AddCurrentHealthDelta(Request.quantity);
             }
-            request.Respond(new Nothing());
+            return new Nothing();
         }
     }
 }

@@ -24,12 +24,12 @@ namespace Assets.Gamelogic.Abilities
 
         private void OnEnable ()
         {
-            spells.ComponentUpdated += OnSpellCast;
+            spells.ComponentUpdated.Add(OnSpellCast);
         }
 
         private void OnDisable()
         {
-            spells.ComponentUpdated -= OnSpellCast;
+            spells.ComponentUpdated.Remove(OnSpellCast);
         }
 
         private void OnSpellCast(Spells.Update spellCastUpdate)

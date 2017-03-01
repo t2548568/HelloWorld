@@ -19,12 +19,12 @@ namespace Assets.Gamelogic.NPC
         private void OnEnable()
         {
             npcDeathActive = SimulationSettings.NPCDeathActive;
-            health.ComponentUpdated += OnHealthUpdated;
+            health.ComponentUpdated.Add(OnHealthUpdated);
         }
 
         private void OnDisable()
         {
-            health.ComponentUpdated -= OnHealthUpdated;
+            health.ComponentUpdated.Remove(OnHealthUpdated);
         }
 
         private void OnHealthUpdated(Health.Update update)

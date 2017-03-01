@@ -29,9 +29,9 @@ namespace Assets.Gamelogic.Fire
 
         private void OnEnable()
         {
-            flammable.CommandReceiver.OnIgnite += OnIgnite;
-            flammable.CommandReceiver.OnExtinguish += OnExtinguish;
-            flammable.CommandReceiver.OnSetCanBeIgnited += OnSetCanBeIgnited;
+            flammable.CommandReceiver.OnIgnite.RegisterResponse(OnIgnite);
+            flammable.CommandReceiver.OnExtinguish.RegisterResponse(OnExtinguish);
+            flammable.CommandReceiver.OnSetCanBeIgnited.RegisterResponse(OnSetCanBeIgnited);
 
             if (flammable.Data.isOnFire)
             {
@@ -41,29 +41,29 @@ namespace Assets.Gamelogic.Fire
 
         private void OnDisable()
         {
-            flammable.CommandReceiver.OnIgnite -= OnIgnite;
-            flammable.CommandReceiver.OnExtinguish -= OnExtinguish;
-            flammable.CommandReceiver.OnSetCanBeIgnited -= OnSetCanBeIgnited;
+            flammable.CommandReceiver.OnIgnite.DeregisterResponse();
+            flammable.CommandReceiver.OnExtinguish.DeregisterResponse();
+            flammable.CommandReceiver.OnSetCanBeIgnited.DeregisterResponse();
 
             StopFlameSpread();
         }
 
-        private void OnIgnite(ResponseHandle<Flammable.Commands.Ignite, Nothing, Nothing> request)
+        private Nothing OnIgnite(Nothing Request, ICommandCallerInfo CallerInfo)
         {
             Ignite();
-            request.Respond(new Nothing());
+            return new Nothing();
         }
 
-        private void OnExtinguish(ResponseHandle<Flammable.Commands.Extinguish, ExtinguishRequest, Nothing> request)
+        private Nothing OnExtinguish(ExtinguishRequest Request, ICommandCallerInfo CallerInfo)
         {
-            Extinguish(request.Request.canBeIgnited);
-            request.Respond(new Nothing());
+            Extinguish(Request.canBeIgnited);
+            return new Nothing();
         }
 
-        private void OnSetCanBeIgnited(ResponseHandle<Flammable.Commands.SetCanBeIgnited, SetCanBeIgnitedRequest, Nothing> request)
+        private Nothing OnSetCanBeIgnited(SetCanBeIgnitedRequest Request, ICommandCallerInfo CallerInfo)
         {
-            SetCanBeIgnited(request.Request.canBeIgnited);
-            request.Respond(new Nothing());
+            SetCanBeIgnited(Request.canBeIgnited);
+            return new Nothing();
         }
 
         private void Ignite()

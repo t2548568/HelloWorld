@@ -29,13 +29,13 @@ namespace Assets.Gamelogic.Player
 
         private void OnEnable()
         {
-            flammable.ComponentUpdated += FlammableUpdated;
+            flammable.ComponentUpdated.Add(FlammableUpdated);
             lastPosition = transform.position;
         }
 
         private void OnDisable()
         {
-            flammable.ComponentUpdated -= FlammableUpdated;
+            flammable.ComponentUpdated.Remove(FlammableUpdated);
         }
 
         private void FlammableUpdated(Flammable.Update update)

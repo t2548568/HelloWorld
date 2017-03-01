@@ -22,7 +22,7 @@ namespace Assets.Gamelogic.Core
 
         private void OnEnable()
         {
-            transformComponent.ComponentUpdated += OnTransformComponentUpdated;
+            transformComponent.ComponentUpdated.Add(OnTransformComponentUpdated);
             if (IsNotAnAuthoritativePlayer())
             {
                 SetUpRemoteTransform();
@@ -31,7 +31,7 @@ namespace Assets.Gamelogic.Core
 
         private void OnDisable()
         {
-            transformComponent.ComponentUpdated -= OnTransformComponentUpdated;
+            transformComponent.ComponentUpdated.Remove(OnTransformComponentUpdated);
             if (isRemote)
             {
                 TearDownRemoveTransform();

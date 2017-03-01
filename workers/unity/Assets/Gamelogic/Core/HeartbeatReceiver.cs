@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Improbable.Entity.Component;
+using UnityEngine;
 using System.Collections;
 using Assets.Gamelogic.Utils;
 using Improbable;
@@ -21,13 +22,13 @@ namespace Assets.Gamelogic.Core
         private void OnEnable()
         {
             entityIdCache = gameObject.EntityId();
-            heartbeat.CommandReceiver.OnHeartbeat += OnHeartbeat;
+            heartbeat.CommandReceiver.OnHeartbeat.RegisterResponse(OnHeartbeat);
             heartbeatCoroutine = StartCoroutine(TimerUtils.CallRepeatedly(SimulationSettings.HeartbeatInterval, HeartbeatIteration));
         }
 
         private void OnDisable()
         {
-            heartbeat.CommandReceiver.OnHeartbeat -= OnHeartbeat;
+            heartbeat.CommandReceiver.OnHeartbeat.DeregisterResponse();
             StopCoroutine(heartbeatCoroutine);
         }
 
@@ -43,10 +44,10 @@ namespace Assets.Gamelogic.Core
             }
         }
 
-        private void OnHeartbeat(Improbable.Entity.Component.ResponseHandle<Heartbeat.Commands.Heartbeat, Nothing, Nothing> request)
+        private Nothing OnHeartbeat(Nothing Request, ICommandCallerInfo CallerInfo)
         {
             SetHeartbeat(SimulationSettings.HeartbeatMax);
-            request.Respond(new Nothing());
+            return new Nothing();
         }
 
         private void Cleanup()

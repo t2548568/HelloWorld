@@ -29,14 +29,14 @@ namespace Assets.Gamelogic.Fire
                 StartDamageRoutine();
             }
 
-            flammable.ComponentUpdated += FlammableOnComponentUpdated;
+            flammable.ComponentUpdated.Add(FlammableOnComponentUpdated);
         }
 
         private void OnDisable()
         {
             CancelDamageRoutine();
 
-            flammable.ComponentUpdated -= FlammableOnComponentUpdated;
+            flammable.ComponentUpdated.Remove(FlammableOnComponentUpdated);
         }
 
         private void FlammableOnComponentUpdated(Flammable.Update update)

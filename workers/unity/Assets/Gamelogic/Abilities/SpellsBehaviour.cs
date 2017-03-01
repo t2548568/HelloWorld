@@ -4,6 +4,7 @@ using Improbable;
 using Improbable.Abilities;
 using Improbable.Collections;
 using Improbable.Core;
+using Improbable.Entity.Component;
 using Improbable.Fire;
 using Improbable.Unity;
 using Improbable.Unity.Core;
@@ -23,13 +24,13 @@ namespace Assets.Gamelogic.Abilities
         private void OnEnable()
         {
             spellTargets = new Collider[SimulationSettings.MaxSpellTargets];
-            spells.CommandReceiver.OnSpellCastRequest += OnSpellCastRequest;
+            spells.CommandReceiver.OnSpellCastRequest.RegisterResponse(OnSpellCastRequest);
             reduceCooldownsCoroutine = StartCoroutine(TimerUtils.CallRepeatedly(1f, ReduceCooldowns));
         }
 
         private void OnDisable()
         {
-            spells.CommandReceiver.OnSpellCastRequest -= OnSpellCastRequest;
+            spells.CommandReceiver.OnSpellCastRequest.DeregisterResponse();
             CancelExistingReduceCooldownsCoroutine();
         }
 
@@ -42,10 +43,10 @@ namespace Assets.Gamelogic.Abilities
             }
         }
 
-        private void OnSpellCastRequest(Improbable.Entity.Component.ResponseHandle<Spells.Commands.SpellCastRequest, SpellCastRequest, Nothing> request)
+        private Nothing OnSpellCastRequest(SpellCastRequest Request, ICommandCallerInfo CallerInfo)
         {
-            CastSpell(request.Request.spellType, request.Request.position.ToVector3());
-            request.Respond(new Nothing());
+            CastSpell(Request.spellType, Request.position.ToVector3());
+            return new Nothing();
         }
 
         public void CastSpell(SpellType spellType, Vector3 position)

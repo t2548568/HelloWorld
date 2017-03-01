@@ -34,20 +34,20 @@ namespace Assets.Gamelogic.NPC.Lumberjack
 
         private void OnEnable()
         {
-            npcLumberjack.ComponentUpdated += OnNpcLumberjackComponentUpdate;
-            targetNavigation.ComponentUpdated += NavigationUpdated;
-            flammable.ComponentUpdated += FlammableUpdated;
-            inventory.ComponentUpdated += OnInventoryUpdated;
+            npcLumberjack.ComponentUpdated.Add(OnNpcLumberjackComponentUpdate);
+            targetNavigation.ComponentUpdated.Add(NavigationUpdated);
+            flammable.ComponentUpdated.Add(FlammableUpdated);
+            inventory.ComponentUpdated.Add(OnInventoryUpdated);
             SetAnimationState(npcLumberjack.Data.currentState);
             SetForwardSpeed(TargetNavigationBehaviour.IsInTransit(targetNavigation));
         }
 
         private void OnDisable()
         {
-            npcLumberjack.ComponentUpdated -= OnNpcLumberjackComponentUpdate;
-            targetNavigation.ComponentUpdated -= NavigationUpdated;
-            inventory.ComponentUpdated -= OnInventoryUpdated;
-            flammable.ComponentUpdated -= FlammableUpdated;
+            npcLumberjack.ComponentUpdated.Remove(OnNpcLumberjackComponentUpdate);
+            targetNavigation.ComponentUpdated.Remove(NavigationUpdated);
+            inventory.ComponentUpdated.Remove(OnInventoryUpdated);
+            flammable.ComponentUpdated.Remove(FlammableUpdated);
         }
 
         public void OnAxeConnect()

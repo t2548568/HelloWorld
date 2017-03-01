@@ -34,12 +34,12 @@ namespace Assets.Gamelogic.Player
 
         private void OnEnable()
         {
-            health.ComponentUpdated += OnHealthUpdated;
+            health.ComponentUpdated.Add(OnHealthUpdated);
         }
 
         private void OnDisable()
         {
-            health.ComponentUpdated -= OnHealthUpdated;
+            health.ComponentUpdated.Add(OnHealthUpdated);
         }
 
         private void OnHealthUpdated(Health.Update update)

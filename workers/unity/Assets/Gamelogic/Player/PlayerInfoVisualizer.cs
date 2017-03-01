@@ -29,16 +29,16 @@ namespace Assets.Gamelogic.Player
 
         private void OnEnable()
         {
-            playerInfo.ComponentUpdated += OnPlayerInfoUpdated;
-            health.ComponentUpdated += OnHealthUpdated;
+            playerInfo.ComponentUpdated.Add(OnPlayerInfoUpdated);
+            health.ComponentUpdated.Add(OnHealthUpdated);
             healthLocalCopy = health.Data.currentHealth;
             UpdatePlayerPanelHealthBar(healthLocalCopy);
         }
 
         private void OnDisable()
         {
-            playerInfo.ComponentUpdated -= OnPlayerInfoUpdated;
-            health.ComponentUpdated -= OnHealthUpdated;
+            playerInfo.ComponentUpdated.Remove(OnPlayerInfoUpdated);
+            health.ComponentUpdated.Remove(OnHealthUpdated);
         }
 
         private void OnHealthUpdated(Health.Update update)

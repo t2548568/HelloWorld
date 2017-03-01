@@ -4,6 +4,7 @@ using Assets.Gamelogic.Life;
 using Improbable;
 using Improbable.Building;
 using Improbable.Core;
+using Improbable.Entity.Component;
 using Improbable.Team;
 using Improbable.Unity.Core;
 using Improbable.Unity.Visualizer;
@@ -28,17 +29,17 @@ namespace Assets.Gamelogic.HQ
         {
             barracksSpawnRadius = SimulationSettings.DefaultHQBarracksSpawnRadius;
             spawnBarracksPeriodicallyCoroutine = StartCoroutine(TimerUtils.CallRepeatedly(SimulationSettings.SimulationTickInterval * 5f, SpawnBarracks));
-            hqInfo.CommandReceiver.OnRegisterBarracks += OnRegisterBarracks;
-            hqInfo.CommandReceiver.OnUnregisterBarracks += OnUnregisterBarracks;
-            hqInfo.ComponentUpdated += OnComponentUpdated;
+            hqInfo.CommandReceiver.OnRegisterBarracks.RegisterResponse(OnRegisterBarracks);
+            hqInfo.CommandReceiver.OnUnregisterBarracks.RegisterResponse(OnUnregisterBarracks);
+            hqInfo.ComponentUpdated.Add(OnComponentUpdated);
             PopulateBarracksDictionary();
         }
 
         private void OnDisable()
         {
-            hqInfo.CommandReceiver.OnRegisterBarracks -= OnRegisterBarracks;
-            hqInfo.CommandReceiver.OnUnregisterBarracks -= OnUnregisterBarracks;
-            hqInfo.ComponentUpdated -= OnComponentUpdated;
+            hqInfo.CommandReceiver.OnRegisterBarracks.DeregisterResponse();
+            hqInfo.CommandReceiver.OnUnregisterBarracks.DeregisterResponse();
+            hqInfo.ComponentUpdated.Remove(OnComponentUpdated);
             CancelSpawnBarracksPeriodicallyCoroutine();
         }
 
@@ -58,23 +59,23 @@ namespace Assets.Gamelogic.HQ
             }
         }
 
-        private void OnRegisterBarracks(Improbable.Entity.Component.ResponseHandle<HQInfo.Commands.RegisterBarracks, RegisterBarracksRequest, Nothing> request)
+        private Nothing OnRegisterBarracks(RegisterBarracksRequest Request, ICommandCallerInfo CallerInfo)
         {
             var newBarracks = new Improbable.Collections.List<EntityId>(hqInfo.Data.barracks);
-            newBarracks.Add(request.Request.entityId);
+            newBarracks.Add(Request.entityId);
             hqInfo.Send(new HQInfo.Update().SetBarracks(newBarracks));
-            request.Respond(new Nothing());
+            return new Nothing();
         }
 
-        private void OnUnregisterBarracks(Improbable.Entity.Component.ResponseHandle<HQInfo.Commands.UnregisterBarracks, UnregisterBarracksRequest, Nothing> request)
+        private Nothing OnUnregisterBarracks(UnregisterBarracksRequest Request, ICommandCallerInfo CallerInfo)
         {
             var barracks = new Improbable.Collections.List<EntityId>(hqInfo.Data.barracks);
-            if (barracks.Contains(request.Request.entityId))
+            if (barracks.Contains(Request.entityId))
             {
-                barracks.Remove(request.Request.entityId);
+                barracks.Remove(Request.entityId);
             }
             hqInfo.Send(new HQInfo.Update().SetBarracks(barracks));
-            request.Respond(new Nothing());
+            return new Nothing();
         }
 
         private void CancelSpawnBarracksPeriodicallyCoroutine()

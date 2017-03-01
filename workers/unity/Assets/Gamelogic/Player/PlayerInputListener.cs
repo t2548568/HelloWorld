@@ -34,13 +34,13 @@ namespace Assets.Gamelogic.Player
         private void OnEnable()
         {
             EnableControls();
-            playerInfo.ComponentUpdated += OnPlayerInfoUpdated;
+            playerInfo.ComponentUpdated.Add(OnPlayerInfoUpdated);
         }
 
         private void OnDisable()
         {
             DisableControls();
-            playerInfo.ComponentUpdated -= OnPlayerInfoUpdated;
+            playerInfo.ComponentUpdated.Add(OnPlayerInfoUpdated);
         }
 
         private void OnPlayerInfoUpdated(PlayerInfo.Update update)
