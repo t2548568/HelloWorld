@@ -35,13 +35,13 @@ namespace Assets.Gamelogic.Fire
             {
                 CreateFireEffectInstance();
             }
-            flammable.ComponentUpdated += OnComponentUpdated;
+            flammable.ComponentUpdated.Add(OnComponentUpdated);
             UpdateParticleSystem(flammable.Data.isOnFire);
         }
 
         private void OnDisable()
         {
-            flammable.ComponentUpdated -= OnComponentUpdated;
+            flammable.ComponentUpdated.Remove(OnComponentUpdated);
         }
 
         private void OnComponentUpdated(Flammable.Update update)

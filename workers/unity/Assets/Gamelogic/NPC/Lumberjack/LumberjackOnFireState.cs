@@ -21,7 +21,7 @@ namespace Assets.Gamelogic.NPC.Lumberjack
 
         public override void Enter()
         {
-            targetNavigation.ComponentUpdated += OnTargetNavigationUpdated;
+            targetNavigation.ComponentUpdated.Add(OnTargetNavigationUpdated);
             NPCUtils.NavigateToRandomNearbyPosition(navigation, navigation.transform.position, SimulationSettings.NPCOnFireWaypointDistance, SimulationSettings.NPCDefaultInteractionSqrDistance);
         }
 
@@ -31,7 +31,7 @@ namespace Assets.Gamelogic.NPC.Lumberjack
 
         public override void Exit(bool disabled)
         {
-            targetNavigation.ComponentUpdated -= OnTargetNavigationUpdated;
+            targetNavigation.ComponentUpdated.Remove(OnTargetNavigationUpdated);
             if (!disabled)
             {
                 navigation.StopNavigation();

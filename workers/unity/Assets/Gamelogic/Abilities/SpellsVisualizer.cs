@@ -13,12 +13,12 @@ namespace Assets.Gamelogic.Abilities
 
         private void OnEnable()
         {
-            spells.ComponentUpdated += OnComponentUpdated;
+            spells.ComponentUpdated.Add(OnComponentUpdated);
         }
 
         private void OnDisable()
         {
-            spells.ComponentUpdated -= OnComponentUpdated;
+            spells.ComponentUpdated.Remove(OnComponentUpdated);
         }
 
         private void OnComponentUpdated(Spells.Update update)

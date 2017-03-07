@@ -24,18 +24,18 @@ namespace Assets.Gamelogic.NPC.Wizard
 
         private void OnEnable()
         {
-            npcWizard.ComponentUpdated += StateUpdated;
-            targetNavigation.ComponentUpdated += NavigationUpdated;
-            flammable.ComponentUpdated += FlammableUpdated;
+            npcWizard.ComponentUpdated.Add(StateUpdated);
+            targetNavigation.ComponentUpdated.Add(NavigationUpdated);
+            flammable.ComponentUpdated.Add(FlammableUpdated);
             SetAnimationState(npcWizard.Data.currentState);
             SetForwardSpeed(TargetNavigationBehaviour.IsInTransit(targetNavigation));
         }
 
         private void OnDisable()
         {
-            npcWizard.ComponentUpdated -= StateUpdated;
-            targetNavigation.ComponentUpdated -= NavigationUpdated;
-            flammable.ComponentUpdated -= FlammableUpdated;
+            npcWizard.ComponentUpdated.Remove(StateUpdated);
+            targetNavigation.ComponentUpdated.Remove(NavigationUpdated);
+            flammable.ComponentUpdated.Remove(FlammableUpdated);
         }
 
         private void StateUpdated(NPCWizard.Update stateUpdate)

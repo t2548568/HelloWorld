@@ -54,12 +54,7 @@ namespace Assets.Gamelogic.Player
 
         private bool PlayerMovementCheatSafeguardPassedFSim(Vector3 targetPosition, Vector3 currentPosition)
         {
-            var result = (targetPosition - currentPosition).sqrMagnitude < SimulationSettings.PlayerPositionUpdateMaxSqrDistance;
-            if (!result)
-            {
-                Debug.LogError("Player movement cheat safeguard failed on FSim.");
-            }
-            return result;
+            return (targetPosition - currentPosition).sqrMagnitude < SimulationSettings.PlayerPositionUpdateMaxSqrDistance;
         }
     }
 }

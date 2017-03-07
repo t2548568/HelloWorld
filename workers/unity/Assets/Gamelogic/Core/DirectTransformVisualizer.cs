@@ -12,14 +12,14 @@ namespace Assets.Gamelogic.Core
 
         private void OnEnable()
         {
-            transformComponent.ComponentUpdated += VisualizeTransform;
+            transformComponent.ComponentUpdated.Add(VisualizeTransform);
             SetPosition(transformComponent.Data.position);
             SetRotation(transformComponent.Data.rotation);
         }
 
         private void OnDisable()
         {
-            transformComponent.ComponentUpdated -= VisualizeTransform;
+            transformComponent.ComponentUpdated.Remove(VisualizeTransform);
         }
 
         private void VisualizeTransform(TransformComponent.Update update)

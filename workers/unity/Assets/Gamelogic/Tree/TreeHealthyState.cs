@@ -25,8 +25,8 @@ namespace Assets.Gamelogic.Tree
             health.SetCurrentHealth(SimulationSettings.TreeMaxHealth);
             flammable.Send(new Flammable.Update().SetCanBeIgnited(true));
 
-            flammable.ComponentUpdated += OnFlammableUpdated;
-            health.ComponentUpdated += OnHealthUpdated;
+            flammable.ComponentUpdated.Add(OnFlammableUpdated);
+            health.ComponentUpdated.Add(OnHealthUpdated);
         }
 
         public override void Tick()
@@ -36,8 +36,8 @@ namespace Assets.Gamelogic.Tree
 
         public override void Exit(bool disabled)
         {
-            health.ComponentUpdated -= OnHealthUpdated;
-            flammable.ComponentUpdated -= OnFlammableUpdated;
+            health.ComponentUpdated.Remove(OnHealthUpdated);
+            flammable.ComponentUpdated.Remove(OnFlammableUpdated);
         }
 
         private void OnHealthUpdated(Health.Update update)

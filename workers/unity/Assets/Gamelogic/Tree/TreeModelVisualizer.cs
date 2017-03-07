@@ -21,13 +21,13 @@ namespace Assets.Gamelogic.Tree
         private void OnEnable()
         {
             SetupTreeModel();
-            treeState.ComponentUpdated += UpdateVisualization;
+            treeState.ComponentUpdated.Add(UpdateVisualization);
             ShowTreeModel(treeState.Data.currentState);
         }
 
         private void OnDisable()
         {
-            treeState.ComponentUpdated -= UpdateVisualization;
+            treeState.ComponentUpdated.Remove(UpdateVisualization);
         }
 
         private void SetupTreeModel()

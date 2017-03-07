@@ -25,12 +25,12 @@ namespace Assets.Gamelogic.Core
 
         private void OnEnable()
         {
-            transformComponent.ComponentUpdated += OnTransformComponentUpdated;
+            transformComponent.ComponentUpdated.Add(OnTransformComponentUpdated);
         }
 
         private void OnDisable()
         {
-            transformComponent.ComponentUpdated -= OnTransformComponentUpdated;
+            transformComponent.ComponentUpdated.Remove(OnTransformComponentUpdated);
         }
 
         private void OnTransformComponentUpdated(TransformComponent.Update update)
@@ -49,7 +49,8 @@ namespace Assets.Gamelogic.Core
 
         public void SetTargetVelocity(Vector3 direction)
         {
-            var movementSpeed = SimulationSettings.PlayerMovementSpeed * (flammable.Data.isOnFire ? SimulationSettings.OnFireMovementSpeedIncreaseFactor : 1f);
+            bool isOnFire = flammable != null && flammable.Data.isOnFire;
+            var movementSpeed = SimulationSettings.PlayerMovementSpeed * (isOnFire ? SimulationSettings.OnFireMovementSpeedIncreaseFactor : 1f);
             targetVelocity = direction * movementSpeed;
         }
 

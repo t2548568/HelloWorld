@@ -19,13 +19,13 @@ namespace Assets.Gamelogic.Team
 
         private void OnEnable()
         {
-            teamAssignment.ComponentUpdated += TeamAssigned;
+            teamAssignment.ComponentUpdated.Add(TeamAssigned);
             SetTeamColour(teamAssignment.Data.teamId);
         }
 
         private void OnDisable()
         {
-            teamAssignment.ComponentUpdated -= TeamAssigned;
+            teamAssignment.ComponentUpdated.Remove(TeamAssigned);
         }
 
         private void TeamAssigned(TeamAssignment.Update teamAssigned)

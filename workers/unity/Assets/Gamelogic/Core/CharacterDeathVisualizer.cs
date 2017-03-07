@@ -20,12 +20,12 @@ namespace Assets.Gamelogic.Core
         private void OnEnable()
         {
             characterModelVisualizer.SetModelVisibility(true);
-            health.ComponentUpdated += HealthUpdated;
+            health.ComponentUpdated.Add(HealthUpdated);
         }
 
         private void OnDisable()
         {
-            health.ComponentUpdated -= HealthUpdated;
+            health.ComponentUpdated.Remove(HealthUpdated);
         }
 
         private void HealthUpdated(Health.Update update)

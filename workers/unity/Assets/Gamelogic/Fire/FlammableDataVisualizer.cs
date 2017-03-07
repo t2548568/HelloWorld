@@ -14,13 +14,13 @@ namespace Assets.Gamelogic.Fire
 
         void OnEnable()
         {
-            flammable.ComponentUpdated += FlammableOnComponentUpdated;
+            flammable.ComponentUpdated.Add(FlammableOnComponentUpdated);
             canBeIgnited = flammable.Data.canBeIgnited;
         }
 
         void OnDisable()
         {
-            flammable.ComponentUpdated -= FlammableOnComponentUpdated;
+            flammable.ComponentUpdated.Remove(FlammableOnComponentUpdated);
             canBeIgnited = false;
         }
 

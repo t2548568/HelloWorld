@@ -29,39 +29,12 @@ namespace Assets.Gamelogic.Player
 
         private void OnEnable()
         {
-            playerInfo.ComponentUpdated += OnPlayerInfoUpdated;
-            health.ComponentUpdated += OnHealthUpdated;
-            healthLocalCopy = health.Data.currentHealth;
-            UpdatePlayerPanelHealthBar(healthLocalCopy);
+            playerInfo.ComponentUpdated.Add(OnPlayerInfoUpdated);
         }
 
         private void OnDisable()
         {
-            playerInfo.ComponentUpdated -= OnPlayerInfoUpdated;
-            health.ComponentUpdated -= OnHealthUpdated;
-        }
-
-        private void OnHealthUpdated(Health.Update update)
-        {
-            if (update.currentHealth.HasValue)
-            {
-                healthLocalCopy = update.currentHealth.Value;
-                UpdatePlayerPanelHealthBar(healthLocalCopy);
-            }
-        }
-
-        private void Update()
-        {
-            if (flammable.Data.isOnFire)
-            {
-                healthLocalCopy -= Time.deltaTime;
-                UpdatePlayerPanelHealthBar(healthLocalCopy);
-            }
-        }
-
-        private void UpdatePlayerPanelHealthBar(float h)
-        {
-            PlayerPanelController.SetPlayerHealth(h / SimulationSettings.PlayerMaxHealth);
+            playerInfo.ComponentUpdated.Remove(OnPlayerInfoUpdated);
         }
 
         private void OnPlayerInfoUpdated(PlayerInfo.Update update)

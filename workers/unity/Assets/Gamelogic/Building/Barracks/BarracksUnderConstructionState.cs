@@ -23,7 +23,7 @@ namespace Assets.Gamelogic.Building.Barracks
             Owner.SetCanAcceptResources(true);
             npcSpawnerBehaviour.SetSpawningEnabled(false);
 
-            health.ComponentUpdated += OnHealthUpdated;
+            health.ComponentUpdated.Add(OnHealthUpdated);
         }
 
         public override void Tick()
@@ -32,7 +32,7 @@ namespace Assets.Gamelogic.Building.Barracks
 
         public override void Exit(bool disabled)
         {
-            health.ComponentUpdated -= OnHealthUpdated;
+            health.ComponentUpdated.Remove(OnHealthUpdated);
         }
 
         private void OnHealthUpdated(Health.Update update)

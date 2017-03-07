@@ -23,18 +23,61 @@ namespace Assets.Gamelogic.Global
 
         private void OnEnable()
         {
-            playerLifeCycle.CommandReceiver.OnSpawnPlayer += OnSpawnPlayer;
-            playerLifeCycle.CommandReceiver.OnDeletePlayer += OnDeletePlayer;
+            playerLifeCycle.CommandReceiver.OnSpawnPlayer.RegisterResponse(OnSpawnPlayer);
+            playerLifeCycle.CommandReceiver.OnDeletePlayer.RegisterResponse(OnDeletePlayer);
 
             playerEntityIds = new Map<string, EntityId>(playerLifeCycle.Data.playerEntityIds);
         }
 
         private void OnDisable()
         {
-            playerLifeCycle.CommandReceiver.OnSpawnPlayer -= OnSpawnPlayer;
-            playerLifeCycle.CommandReceiver.OnDeletePlayer -= OnDeletePlayer;
+            playerLifeCycle.CommandReceiver.OnSpawnPlayer.DeregisterResponse();
+            playerLifeCycle.CommandReceiver.OnDeletePlayer.DeregisterResponse();
 
             playerEntityIds = null;
+        }
+
+        private Nothing OnSpawnPlayer(SpawnPlayerRequest request, ICommandCallerInfo callerinfo)
+        {
+            // Check if we already have a player, or request for a player
+            if (playerEntityIds.ContainsKey(callerinfo.CallerWorkerId))
+            {
+                return new Nothing();
+            }
+
+            // Mark as requested
+            playerEntityIds.Add(callerinfo.CallerWorkerId, new EntityId());
+
+            // Request Id
+            RequestPlayerEntityId(callerinfo.CallerWorkerId);
+
+            // Respond
+            SendMapUpdate();
+            return new Nothing();
+        }
+
+        private Nothing OnDeletePlayer(DeletePlayerRequest request, ICommandCallerInfo callerinfo)
+        {
+            if (playerEntityIds.ContainsKey(callerinfo.CallerWorkerId))
+            {
+                var entityId = playerEntityIds[callerinfo.CallerWorkerId];
+                if (entityId.IsValid())
+                {
+
+                    SpatialOS.Commands.DeleteEntity(playerLifeCycle, entityId, result =>
+                    {
+                        if (result.StatusCode != StatusCode.Success)
+                        {
+                            Debug.LogErrorFormat("failed to delete inactive entity {0} with error message: {1}",
+                                entityId, result.ErrorMessage);
+                            return;
+                        }
+                    });
+                }
+                playerEntityIds.Remove(callerinfo.CallerWorkerId);
+                SendMapUpdate();
+            }
+            return new Nothing();
         }
 
         private void SendMapUpdate()
@@ -42,26 +85,6 @@ namespace Assets.Gamelogic.Global
             var update = new PlayerLifeCycle.Update();
             update.SetPlayerEntityIds(playerEntityIds);
             playerLifeCycle.Send(update);
-        }
-
-        private void OnSpawnPlayer(ResponseHandle<PlayerLifeCycle.Commands.SpawnPlayer, SpawnPlayerRequest, Nothing> responseHandle)
-        {
-            // Check if we already have a player, or request for a player
-            if (playerEntityIds.ContainsKey(responseHandle.CallerInfo.CallerWorkerId))
-            {
-                responseHandle.Respond(new Nothing());
-                return;
-            }
-
-            // Mark as requested
-			playerEntityIds.Add(responseHandle.CallerInfo.CallerWorkerId, new EntityId());
-
-            // Request Id
-            RequestPlayerEntityId(responseHandle.CallerInfo.CallerWorkerId);
-
-            // Respond
-            SendMapUpdate();
-            responseHandle.Respond(new Nothing());
         }
 
         private void RequestPlayerEntityId(string workerId)
@@ -102,30 +125,6 @@ namespace Assets.Gamelogic.Global
                     return;
                 }
             });
-        }
-
-        private void OnDeletePlayer(ResponseHandle<PlayerLifeCycle.Commands.DeletePlayer, DeletePlayerRequest, Nothing> responseHandle)
-        {
-            if (playerEntityIds.ContainsKey(responseHandle.CallerInfo.CallerWorkerId))
-            {
-                var entityId = playerEntityIds[responseHandle.CallerInfo.CallerWorkerId];
-                if (entityId.IsValid())
-                {
-
-                    SpatialOS.Commands.DeleteEntity(playerLifeCycle, entityId, result =>
-                    {
-                        if (result.StatusCode != StatusCode.Success)
-                        {
-                            Debug.LogErrorFormat("failed to delete inactive entity {0} with error message: {1}",
-                                entityId, result.ErrorMessage);
-                            return;
-                        }
-                    });
-                }
-                playerEntityIds.Remove(responseHandle.CallerInfo.CallerWorkerId);
-                SendMapUpdate();
-            }
-            responseHandle.Respond(new Nothing());
         }
     }
 }

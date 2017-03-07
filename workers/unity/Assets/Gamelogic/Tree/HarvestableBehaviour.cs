@@ -16,19 +16,19 @@ namespace Assets.Gamelogic.Tree
 
         private void OnEnable()
         {
-            harvestable.CommandReceiver.OnHarvest += OnHarvest;
+            harvestable.CommandReceiver.OnHarvest.RegisterResponse(OnHarvest);
         }
 
         private void OnDisable()
         {
-            harvestable.CommandReceiver.OnHarvest -= OnHarvest;
+            harvestable.CommandReceiver.OnHarvest.DeregisterResponse();
         }
 
-        private void OnHarvest(ResponseHandle<Harvestable.Commands.Harvest, HarvestRequest, HarvestResponse> request)
+        private HarvestResponse OnHarvest(HarvestRequest request, ICommandCallerInfo callerinfo)
         {
             var resourcesToGive = Mathf.Min(SimulationSettings.HarvestReturnQuantity, health.Data.currentHealth);
             health.AddCurrentHealthDelta(-resourcesToGive);
-            request.Respond(new HarvestResponse(resourcesToGive));
+            return new HarvestResponse(resourcesToGive);
         }
     }
 }

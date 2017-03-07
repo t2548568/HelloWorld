@@ -15,13 +15,13 @@ namespace Assets.Gamelogic.HQ
 
         private void OnEnable()
         {
-            health.ComponentUpdated += OnHealthUpdated;
+            health.ComponentUpdated.Add(OnHealthUpdated);
             UpdateHQHealthBar(teamAssignment.Data.teamId, health.Data.currentHealth);
         }
 
         private void OnDisable()
         {
-            health.ComponentUpdated -= OnHealthUpdated;
+            health.ComponentUpdated.Remove(OnHealthUpdated);
         }
 
         private void OnHealthUpdated(Health.Update update)

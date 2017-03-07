@@ -20,7 +20,7 @@ namespace Assets.Gamelogic.NPC.Wizard
 
         public override void Enter()
         {
-            targetNavigation.ComponentUpdated += OnTargetNavigationComponentUpdate;
+            targetNavigation.ComponentUpdated.Add(OnTargetNavigationComponentUpdate);
             NPCUtils.NavigateToRandomNearbyPosition(navigation, navigation.transform.position, SimulationSettings.NPCOnFireWaypointDistance, SimulationSettings.NPCDefaultInteractionSqrDistance);
         }
 
@@ -30,7 +30,7 @@ namespace Assets.Gamelogic.NPC.Wizard
 
         public override void Exit(bool disabled)
         {
-            targetNavigation.ComponentUpdated -= OnTargetNavigationComponentUpdate;
+            targetNavigation.ComponentUpdated.Remove(OnTargetNavigationComponentUpdate);
             if (!disabled)
             {
                 navigation.StopNavigation();

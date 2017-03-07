@@ -34,12 +34,12 @@ namespace Assets.Gamelogic.Life
         {
             UpdateEntityHealthPanel();
             entityHealthPanelController.SetHealthColorFromTeam(teamAssigment.Data.teamId);
-            health.ComponentUpdated += OnComponentUpdated;
+            health.ComponentUpdated.Add(OnComponentUpdated);
         }
 
         private void OnDisable()
         {
-            health.ComponentUpdated -= OnComponentUpdated;
+            health.ComponentUpdated.Remove(OnComponentUpdated);
         }
 
         private void OnComponentUpdated(Health.Update update)

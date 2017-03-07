@@ -125,7 +125,8 @@ namespace Assets.Gamelogic.NPC
             var targetHealthVisualizer = target.GetComponent<HealthVisualizer>();
             return targetTreeStateVisualizer != null && 
                    targetHealthVisualizer != null &&
-                   targetTreeStateVisualizer.CurrentState == TreeFSMState.HEALTHY &&
+                   targetTreeStateVisualizer.CurrentState != null &&
+                   targetTreeStateVisualizer.CurrentState.Data.currentState == TreeFSMState.HEALTHY &&
                    targetHealthVisualizer.CurrentHealth > 0;
         }
 

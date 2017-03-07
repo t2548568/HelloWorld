@@ -6,6 +6,7 @@ using Improbable.Unity.Core.EntityQueries;
 using Improbable.Worker;
 using Improbable.Worker.Query;
 using System;
+using Assets.Gamelogic.Utils;
 using UnityEngine;
 
 namespace Assets.Gamelogic.Core
@@ -72,9 +73,8 @@ namespace Assets.Gamelogic.Core
         {
             if (!response.Response.HasValue || response.StatusCode != StatusCode.Success)
             {
-                Debug.LogError("SpawnPlayer command failed: " + response.ErrorMessage);
+                Debug.LogError("SpawnPlayer Command " + response.ErrorMessage + ", trying again...");
                 RequestPlayerSpawn(simulationManagerEntityId);
-                return;
             }
         }
     }

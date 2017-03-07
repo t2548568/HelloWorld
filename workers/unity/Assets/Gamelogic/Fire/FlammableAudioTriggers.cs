@@ -19,16 +19,17 @@ namespace Assets.Gamelogic.Fire
         private void Awake()
         {
             audioSource = gameObject.GetComponentIfUnassigned(audioSource);
+            audioSource.enabled = true;
         }
 
         private void OnEnable()
         {
-            flammable.ComponentUpdated += OnFireChange;
+            flammable.ComponentUpdated.Add(OnFireChange);
         }
 
         private void OnDisable()
         {
-            flammable.ComponentUpdated -= OnFireChange;
+            flammable.ComponentUpdated.Remove(OnFireChange);
         }
 
         private void OnFireChange(Flammable.Update fireChange)
