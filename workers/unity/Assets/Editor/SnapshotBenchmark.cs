@@ -10,7 +10,7 @@ namespace Assets.Editor
             var texture = AssetDatabase.LoadAssetAtPath<Texture2D>("Assets/Editor/Resources/full.png");
             
             SnapshotUtil.AddTrees(snapshot, texture, 0.35f, 10000, 500, 0);
-            SnapshotUtil.AddSimulationManagerEntity(snapshot);
+			SnapshotUtil.AddPlayerSpawner(snapshot);
         }
     }
 }

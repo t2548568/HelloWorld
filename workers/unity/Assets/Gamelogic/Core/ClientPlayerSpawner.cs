@@ -16,66 +16,45 @@ namespace Assets.Gamelogic.Core
     /// </summary>
     public static class ClientPlayerSpawner
     {
-		public static EntityId SimulationManagerEntityId;
-
         public static void SpawnPlayer()
         {
-            FindSimulationManagerEntityId(RequestPlayerSpawn);
+            FindPlayerSpawnerEntityId(RequestPlayerSpawn);
         }
 
-        public static void DeletePlayer()
+		private static void FindPlayerSpawnerEntityId(Action<EntityId> playerSpawnCallback)
         {
-			if (SimulationManagerEntityId.IsValid())
+            var playerSpawnerQuery = Query.HasComponent<PlayerSpawning>().ReturnOnlyEntityIds();
+			SpatialOS.WorkerCommands.SendQuery(playerSpawnerQuery, queryResult => OnQueryResult(playerSpawnCallback, queryResult));
+        }
+
+        private static void OnQueryResult(Action<EntityId> requestPlayerSpawnCallback, ICommandCallbackResponse<EntityQueryResult> queryResult)
+        {
+            if (!queryResult.Response.HasValue || queryResult.StatusCode != StatusCode.Success)
             {
-                SpatialOS.Connection.SendCommandRequest(SimulationManagerEntityId, new PlayerLifeCycle.Commands.DeletePlayer.Request(new DeletePlayerRequest()), null);
-            }
-        }
-
-        private static void FindSimulationManagerEntityId(Action<EntityId> callback)
-        {
-			if (SimulationManagerEntityId.IsValid())
-		    {
-                callback.Invoke(SimulationManagerEntityId);
-		        return;
-		    }
-
-            var entityQuery = Query.HasComponent<PlayerLifeCycle>().ReturnOnlyEntityIds();
-            SpatialOS.WorkerCommands.SendQuery(entityQuery, response => OnSearchResult(callback, response));
-        }
-
-        private static void OnSearchResult(Action<EntityId> callback,
-                                           ICommandCallbackResponse<EntityQueryResult> response)
-        {
-            if (!response.Response.HasValue || response.StatusCode != StatusCode.Success)
-            {
-                Debug.LogError("Find player spawner query failed with error: " + response.ErrorMessage);
+				Debug.LogError("PlayerSpawner query failed. SpatialOS workers probably haven't started yet.  Try again in a few seconds.");
                 return;
             }
 
-            var result = response.Response.Value;
-            if (result.EntityCount < 1)
+            var queriedEntities = queryResult.Response.Value;
+            if (queriedEntities.EntityCount < 1)
             {
-                Debug.LogError("Failed to find player spawner: no entities found with the PlayerSpawner component.");
+                Debug.LogError("Failed to find PlayerSpawner. SpatialOS probably hadn't finished spawning the initial snapshot. Try again in a few seconds.");
                 return;
             }
 
-            SimulationManagerEntityId = result.Entities.First.Value.Key;
-            callback(SimulationManagerEntityId);
+            var playerSpawnerEntityId = queriedEntities.Entities.First.Value.Key;
+			requestPlayerSpawnCallback(playerSpawnerEntityId);
         }
 
-        private static void RequestPlayerSpawn(EntityId simulationManagerEntityId)
+		private static void RequestPlayerSpawn(EntityId playerSpawnerEntityId)
         {
-            SpatialOS.WorkerCommands.SendCommand(PlayerLifeCycle.Commands.SpawnPlayer.Descriptor, new SpawnPlayerRequest(), simulationManagerEntityId, 
-                response => OnSpawnPlayerResponse(simulationManagerEntityId, response));
+			SpatialOS.WorkerCommands.SendCommand(PlayerSpawning.Commands.SpawnPlayer.Descriptor, new SpawnPlayerRequest(), playerSpawnerEntityId)
+				.OnFailure(error => OnSpawnPlayerFailure(error, playerSpawnerEntityId));
         }
 
-        private static void OnSpawnPlayerResponse(EntityId simulationManagerEntityId, ICommandCallbackResponse<Nothing> response)
+		private static void OnSpawnPlayerFailure(ICommandErrorDetails error, EntityId playerSpawnerEntityId)
         {
-            if (!response.Response.HasValue || response.StatusCode != StatusCode.Success)
-            {
-                Debug.LogError("SpawnPlayer Command " + response.ErrorMessage + ", trying again...");
-                RequestPlayerSpawn(simulationManagerEntityId);
-            }
+            Debug.LogWarning("SpawnPlayer command failed - you probably tried to connect too soon. Try again in a few seconds.");
         }
     }
 }

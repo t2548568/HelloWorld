@@ -101,18 +101,18 @@ namespace Assets.Gamelogic.Building
         private void SpawnLumberjack(Coordinates position)
         {
             var template = EntityTemplateFactory.CreateNPCLumberjackTemplate(position, teamAssignment.Data.teamId);
-            SpatialOS.Commands.CreateEntity(npcSpawner, SimulationSettings.NPCPrefabName, template, result => { });
+            SpatialOS.Commands.CreateEntity(npcSpawner, SimulationSettings.NPCPrefabName, template);
         }
 
         private void SpawnWizard(Coordinates position)
         {
             var template = EntityTemplateFactory.CreateNPCWizardTemplate(position, teamAssignment.Data.teamId);
-            SpatialOS.Commands.CreateEntity(npcSpawner, SimulationSettings.NPCWizardPrefabName, template, result => { });
+            SpatialOS.Commands.CreateEntity(npcSpawner, SimulationSettings.NPCWizardPrefabName, template);
         }
 
         public void ResetCooldowns()
         {
-            npcSpawner.Send(new NPCSpawner.Update().SetCooldowns(new Map<NPCRole, float> { { NPCRole.LUMBERJACK, 0f }, { NPCRole.WIZARD, 0f } }));
+			npcSpawner.Send(new NPCSpawner.Update().SetCooldowns(new Map<NPCRole, float> { { NPCRole.LUMBERJACK, SimulationSettings.LumberjackSpawningCooldown }, { NPCRole.WIZARD, SimulationSettings.WizardSpawningCooldown } }));
         }
     }
 }

@@ -7,7 +7,6 @@ using Improbable.Core;
 using Improbable.Team;
 using Improbable.Unity.Core;
 using Improbable.Unity.Visualizer;
-using Improbable.Worker;
 using System.Collections;
 using System.Collections.Generic;
 using Assets.Gamelogic.Utils;
@@ -133,17 +132,15 @@ namespace Assets.Gamelogic.HQ
 
             var teamId = teamAssignment.Data.teamId;
             var template = EntityTemplateFactory.CreateBarracksTemplate(spawnPosition.ToCoordinates(), BarracksState.UNDER_CONSTRUCTION, teamId);
-            SpatialOS.Commands.CreateEntity(hqInfo, SimulationSettings.BarracksPrefabName, template, response => OnBarracksSpawnResponse(response));
-        }
-
-        private void OnBarracksSpawnResponse(ICommandCallbackResponse<EntityId> response)
-        {
-            if (response.StatusCode != StatusCode.Success)
-            {
-                Debug.LogError("HQ failed to spawn barracks due to timeout.");
-                return;
-            }
-            PopulateBarracksDictionary();
+            SpatialOS.Commands.CreateEntity(hqInfo, SimulationSettings.BarracksPrefabName, template)
+                .OnFailure(_ =>
+                {
+                    Debug.LogError("HQ failed to spawn barracks due to timeout.");
+                })
+                .OnSuccess(_ =>
+                {
+                    PopulateBarracksDictionary();
+                });
         }
 
         private bool SpawnLocationInvalid(Vector3 position)

@@ -1,5 +1,7 @@
-﻿using Assets.Gamelogic.Core;
+﻿using System;
+using Assets.Gamelogic.Core;
 using Assets.Gamelogic.Utils;
+using Improbable.Unity.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,39 +12,18 @@ namespace Assets.Gamelogic.UI
         [SerializeField] private GameObject NotReadyWarning;
         [SerializeField] private Button ConnectButton;
 
-        private Bootstrap bootstrap;
-
         private static SplashScreenController instance;
+        private const string GameEntryGameObject = "GameEntry";
 
         private void Awake()
         {
             instance = this;
         }
 
-        public static void HideSplashScreen()
-        {
-            instance.NotReadyWarning.SetActive(false);
-            instance.gameObject.SetActive(false);
-        }
-
         public void AttemptToConnect()
         {
             DisableConnectButton();
-            instance.bootstrap = GameObject.Find("GameEntry").GetComponent<Bootstrap>();
-            if (instance.bootstrap.IsReadyToConnectClient())
-            {
-                instance.AttemptConnection();
-            }
-            else
-            {
-                instance.DisplayNotReadyWarning();
-                StartCoroutine(TimerUtils.WaitAndPerform(7, EnableConnectButton));
-            }
-        }
-
-        private void EnableConnectButton()
-        {
-            ConnectButton.interactable = true;
+            instance.AttemptConnection();
         }
 
         private void DisableConnectButton()
@@ -53,17 +34,29 @@ namespace Assets.Gamelogic.UI
 
         private void AttemptConnection()
         {
-            instance.bootstrap.AttemptClientConnect();
-            StartCoroutine(TimerUtils.WaitAndPerform(7, DisplayNotReadyWarning));
+            if (!GameObject.Find(GameEntryGameObject).GetComponent<Bootstrap>())
+            {
+                throw new Exception("Couldn't find Bootstrap script on GameEntry in ClientScene");
+            }
+            Bootstrap bootstrap = GameObject.Find(GameEntryGameObject).GetComponent<Bootstrap>();
+            bootstrap.AttemptToConnectClient();
+            StartCoroutine(TimerUtils.WaitAndPerform(SimulationSettings.ClientConnectionTimeoutSecs, ConnectionTimeout));
         }
 
-        private void DisplayNotReadyWarning()
+        private void ConnectionTimeout()
         {
-            if (gameObject.activeSelf)
+            if (SpatialOS.IsConnected)
             {
-                instance.NotReadyWarning.SetActive(true);
-                EnableConnectButton();
-            } 
+                SpatialOS.Disconnect();
+            }
+            instance.NotReadyWarning.SetActive(true);
+            ConnectButton.interactable = true;
+        }
+
+        public static void HideSplashScreen()
+        {
+            instance.NotReadyWarning.SetActive(false);
+            instance.gameObject.SetActive(false);
         }
     }
 }

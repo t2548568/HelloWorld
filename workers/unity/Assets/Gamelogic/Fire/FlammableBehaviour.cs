@@ -103,8 +103,7 @@ namespace Assets.Gamelogic.Fire
         {
             if (flammable == null)
             {
-                SpatialOS.Commands.SendCommand(writer, Flammable.Commands.Ignite.Descriptor, new Nothing(), 
-                    gameObject.EntityId(), _ => { });
+                SpatialOS.Commands.SendCommand(writer, Flammable.Commands.Ignite.Descriptor, new Nothing(), gameObject.EntityId());
                 return;
             }
             Ignite();
@@ -114,8 +113,7 @@ namespace Assets.Gamelogic.Fire
         {
             if (flammable == null)
             {
-                SpatialOS.Commands.SendCommand(writer, Flammable.Commands.Extinguish.Descriptor, new ExtinguishRequest(canBeIgnited), 
-                    gameObject.EntityId(), _ => { });
+                SpatialOS.Commands.SendCommand(writer, Flammable.Commands.Extinguish.Descriptor, new ExtinguishRequest(canBeIgnited), gameObject.EntityId());
                 return;
             }
             Extinguish(canBeIgnited);
@@ -125,8 +123,7 @@ namespace Assets.Gamelogic.Fire
         {
             if (flammable == null)
             {
-                SpatialOS.Commands.SendCommand(writer, Flammable.Commands.SetCanBeIgnited.Descriptor, new SetCanBeIgnitedRequest(canBeIgnited), 
-                    gameObject.EntityId(), _ => { });
+                SpatialOS.Commands.SendCommand(writer, Flammable.Commands.SetCanBeIgnited.Descriptor, new SetCanBeIgnitedRequest(canBeIgnited), gameObject.EntityId());
                 return;
             }
             SetCanBeIgnited(canBeIgnited);
@@ -149,7 +146,6 @@ namespace Assets.Gamelogic.Fire
         {
             if (flammable == null)
             {
-                Debug.LogError("flammable component was set to null in the flammable behaviour");
                 return;
             }
 

@@ -1,5 +1,6 @@
 using Assets.Gamelogic.Core;
 using Assets.Gamelogic.UI;
+using Assets.Gamelogic.Utils;
 using Improbable.Core;
 using Improbable.Fire;
 using Improbable.Life;
@@ -30,6 +31,10 @@ namespace Assets.Gamelogic.Player
         private void OnEnable()
         {
             playerInfo.ComponentUpdated.Add(OnPlayerInfoUpdated);
+            MainCameraController.SetTarget(gameObject);
+            UIController.ShowUI();
+            StartCoroutine(TimerUtils.WaitAndPerform(1, SplashScreenController.HideSplashScreen));
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
 
         private void OnDisable()

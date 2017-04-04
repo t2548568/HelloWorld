@@ -6,6 +6,9 @@ namespace Assets.Gamelogic.Core
 {
     public static class SimulationSettings
     {
+        // Connection
+        public static float ClientConnectionTimeoutSecs = 7;
+
         // Entity Prefab Names
         public static string PlayerPrefabName = "Player";
         public static string NPCPrefabName = "NPCLumberjack";
@@ -14,7 +17,7 @@ namespace Assets.Gamelogic.Core
         public static string TreePrefabName = "Tree";
         public static string StockpilePrefabName = "Stockpile";
         public static string BarracksPrefabName = "Barracks";
-        public static string SimulationManagerEntityName = "SimulationManagerEntity";
+        public static string PlayerSpawnerPrefabName = "PlayerSpawner";
         public static string LightningPrefabName = "Lightning";
         public static string TeamPrefabName = "Team";
 
@@ -52,8 +55,8 @@ namespace Assets.Gamelogic.Core
         public static float TreeCutDownTimeBuffer = 1f;
 
         // Entity counts
-        public static int AttemptedTreeCount = 30000;
-        public static float TreeJitter = 2.0f;
+        public static int AttemptedTreeCount = 20000;
+        public static float TreeJitter = 10.0f;
         public static int NPCCount = 40;
 
         // Component Updates
@@ -140,11 +143,11 @@ namespace Assets.Gamelogic.Core
         // Buildings
         public static int HQMaxHealth = 20;
         public static int BarracksMaxHealth = 10;
-        public static float LumberjackSpawningCooldown = 600f;
-        public static float WizardSpawningCooldown = 15;
+        public static float LumberjackSpawningCooldown = 6000f;
+        public static float WizardSpawningCooldown = 30;
         public static float SpawnOffsetFactor = 5f;
         public static float PlayerSpawnOffsetFactor = 48.0f;
-        public static int HQStartingLumberjacksCount = 20; 
+        public static int HQStartingLumberjacksCount = 20;
         public static int HQStartingWizardsCount = 0;
         public static float DefaultHQBarracksSpawnRadius = 25f;
         public static float MaxHQBarracksSpawnRadius = 200f;
@@ -157,8 +160,8 @@ namespace Assets.Gamelogic.Core
 
 
         // Heartbeats
-        public const uint HeartbeatMax = 3;
-        public const float HeartbeatInterval = 3.0f;
+        public const uint DefaultHeartbeatsBeforeTimeout = 3;
+        public const float HeartbeatCheckInterval = 3.0f;
 
         // Teams
         public const int TeamCount = 2;
@@ -170,8 +173,8 @@ namespace Assets.Gamelogic.Core
 
         public static Coordinates[] TeamHQLocations =
         {
-            new Coordinates(-150.0, 0.0, -100.0),
-            new Coordinates(230.0, 0.0, 150.0)
+            new Coordinates(-420.0, 0.0, -420.0),
+            new Coordinates(420.0, 0.0, 420.0)
         };
 
         public static EntityId[] HQEntityIds =

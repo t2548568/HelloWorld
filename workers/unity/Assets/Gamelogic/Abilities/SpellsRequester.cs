@@ -91,7 +91,7 @@ namespace Assets.Gamelogic.Abilities
         private void CastSpell()
         {
             var spellCastRequest = new SpellCastRequest(activeSpell, spellTargetPosition.ToCoordinates());
-            SpatialOS.Commands.SendCommand(clientAuthorityCheck, Spells.Commands.SpellCastRequest.Descriptor, spellCastRequest, gameObject.EntityId(), response => { });
+            SpatialOS.Commands.SendCommand(clientAuthorityCheck, Spells.Commands.SpellCastRequest.Descriptor, spellCastRequest, gameObject.EntityId());
             SetLocalSpellCooldown(activeSpell, SimulationSettings.SpellCooldown);
             DeactivateSpellCastingMode();
         }

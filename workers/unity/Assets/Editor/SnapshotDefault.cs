@@ -13,7 +13,7 @@ namespace Assets.Editor
             SnapshotUtil.AddHQs(snapshot, SimulationSettings.TeamHQLocations);
             SnapshotUtil.AddNPCsAroundHQs(snapshot, SimulationSettings.TeamHQLocations);
             SnapshotUtil.AddTrees(snapshot, texture, 0.35f, SimulationSettings.AttemptedTreeCount, SimulationSettings.SpawningWorldEdgeLength, SimulationSettings.TreeJitter);
-            SnapshotUtil.AddSimulationManagerEntity(snapshot);
+			SnapshotUtil.AddPlayerSpawner(snapshot);
         }
     }
 }

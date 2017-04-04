@@ -1,11 +1,10 @@
-1000 ClientAuthorityCheck
 1001 FSimAuthorityCheck
 1002 Transform
 1003 Heartbeat
 1004 Inventory
 1005 TeamAssignment
 
-1100 PlayerLifeCycle
+1100 PlayerSpawning
 1101 TeamCollection
 1102 TeamKnowledge
 
@@ -31,3 +30,5 @@
 1802 NPCWizard
 
 1900 Chat
+
+2000 ClientAuthorityCheck

@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 0.756
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.3822398, g: 0.38485563, b: 0.3754179, a: 0.756}
+  m_IndirectSpecularColor: {r: 0.5553329, g: 0.5492982, b: 0.5524759, a: 0.756}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -324,6 +324,16 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 224478238466866956, guid: 0ecb1469ae4e9dc4ea330e85d6c6c63e,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: -86.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 224334228987705678, guid: 0ecb1469ae4e9dc4ea330e85d6c6c63e,
+        type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 700
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0ecb1469ae4e9dc4ea330e85d6c6c63e, type: 2}
   m_IsPrefabParent: 0
@@ -578,7 +588,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d504af5aa1f0ed4fad51a0dfde196c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseLocalPrefabs: 0
+  UseLocalPrefabs: 1
   LocalAssetDatabasePath: ../../build/assembly/
 --- !u!114 &1750922937
 MonoBehaviour:

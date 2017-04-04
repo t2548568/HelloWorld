@@ -39,7 +39,7 @@ namespace Assets.Gamelogic.NPC
         {
             if (npcDeathActive && update.currentHealth.Value <= 0)
             {
-                SpatialOS.Commands.DeleteEntity(fSimAuthorityCheck, gameObject.EntityId(), result => { });
+                SpatialOS.Commands.DeleteEntity(fSimAuthorityCheck, gameObject.EntityId());
             }
         }
     }

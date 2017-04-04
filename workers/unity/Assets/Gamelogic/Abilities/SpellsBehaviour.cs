@@ -75,10 +75,10 @@ namespace Assets.Gamelogic.Abilities
                     switch (spellType)
                     {
                         case SpellType.LIGHTNING:
-                            SpatialOS.Commands.SendCommand(spells, Flammable.Commands.Ignite.Descriptor, new Nothing(), targetEntityId, _ => { });
+                            SpatialOS.Commands.SendCommand(spells, Flammable.Commands.Ignite.Descriptor, new Nothing(), targetEntityId);
                             break;
                         case SpellType.RAIN:
-                            SpatialOS.Commands.SendCommand(spells, Flammable.Commands.Extinguish.Descriptor, new ExtinguishRequest(true), targetEntityId, _ => { });
+                            SpatialOS.Commands.SendCommand(spells, Flammable.Commands.Extinguish.Descriptor, new ExtinguishRequest(true), targetEntityId);
                             break;
                     }
                 }

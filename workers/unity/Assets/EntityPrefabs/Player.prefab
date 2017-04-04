@@ -42,7 +42,6 @@ GameObject:
   - component: {fileID: 114000010837169838}
   - component: {fileID: 82000011764088950}
   - component: {fileID: 114000013841364048}
-  - component: {fileID: 114000011450260696}
   - component: {fileID: 136000012887926318}
   m_Layer: 0
   m_Name: Player
@@ -1681,17 +1680,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transformSender: {fileID: 114000010783945482}
   flammableInterface: {fileID: 114000013895989572}
---- !u!114 &114000011450260696
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 107220}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32d765a60ea880f42b2daf06aa9b6697, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114000011755698532
 MonoBehaviour:
   m_ObjectHideFlags: 1

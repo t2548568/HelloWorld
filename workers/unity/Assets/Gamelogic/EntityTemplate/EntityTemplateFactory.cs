@@ -1,4 +1,5 @@
 using Assets.Gamelogic.Core;
+using Assets.Gamelogic.Global;
 using Assets.Gamelogic.Utils;
 using Improbable;
 using Improbable.Abilities;
@@ -16,27 +17,33 @@ using Improbable.Team;
 using Improbable.Tree;
 using Improbable.Unity.Core.Acls;
 using Improbable.Worker;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Gamelogic.EntityTemplate
 {
     public static class EntityTemplateFactory
     {
-        public static Entity CreatePlayerTemplate(string clientWorkerId, Coordinates initialPosition, uint teamId)
+        public static Entity CreatePlayerTemplate(string clientWorkerId)
         {
+            var teamId = (uint) Random.Range(0, SimulationSettings.TeamCount);
+            var spawningOffset = new Vector3(Random.value - 0.5f, 0f, Random.value - 0.5f) * SimulationSettings.PlayerSpawnOffsetFactor;
+            var hqPosition = SimulationSettings.TeamHQLocations[teamId].ToVector3();
+            var spawnPosition = (hqPosition + spawningOffset).ToCoordinates();
+
             var template = new Entity();
             template.Add(new ClientAuthorityCheck.Data());
             template.Add(new FSimAuthorityCheck.Data());
-            template.Add(new TransformComponent.Data(initialPosition, 0));
-            template.Add(new PlayerInfo.Data(true, initialPosition));
-            template.Add(new PlayerControls.Data(initialPosition));
+            template.Add(new TransformComponent.Data(spawnPosition, 0));
+            template.Add(new PlayerInfo.Data(true, spawnPosition));
+            template.Add(new PlayerControls.Data(spawnPosition));
             template.Add(new Health.Data(SimulationSettings.PlayerMaxHealth, SimulationSettings.PlayerMaxHealth, true));
             template.Add(new Flammable.Data(false, true, FireEffectType.SMALL));
             template.Add(new Spells.Data(new Map<SpellType, float> { { SpellType.LIGHTNING, 0f }, { SpellType.RAIN, 0f } }, true));
             template.Add(new Inventory.Data(0));
             template.Add(new Chat.Data());
-            template.Add(new Heartbeat.Data(SimulationSettings.HeartbeatMax));
+            template.Add(new ConnectionHeartbeat.Data(SimulationSettings.DefaultHeartbeatsBeforeTimeout));
             template.Add(new TeamAssignment.Data(teamId));
-            template.Add(new Flammable.Data(false, true, FireEffectType.SMALL));
 
             var specificClientPredicate = CommonRequirementSets.SpecificClientOnly(clientWorkerId);
 
@@ -52,7 +59,7 @@ namespace Assets.Gamelogic.EntityTemplate
                 .SetWriteAccess<Spells>(CommonRequirementSets.PhysicsOnly)
                 .SetWriteAccess<Inventory>(CommonRequirementSets.PhysicsOnly)
                 .SetWriteAccess<Chat>(CommonRequirementSets.PhysicsOnly)
-                .SetWriteAccess<Heartbeat>(CommonRequirementSets.PhysicsOnly)
+                .SetWriteAccess<ConnectionHeartbeat>(CommonRequirementSets.PhysicsOnly)
                 .SetWriteAccess<TeamAssignment>(CommonRequirementSets.PhysicsOnly);
 
             template.SetAcl(permissions);
@@ -69,7 +76,7 @@ namespace Assets.Gamelogic.EntityTemplate
             template.Add(new Health.Data(barracksState == BarracksState.CONSTRUCTION_FINISHED ? SimulationSettings.BarracksMaxHealth : 0, SimulationSettings.BarracksMaxHealth, true));
             template.Add(new Flammable.Data(false, false, FireEffectType.BIG));
             template.Add(new StockpileDepository.Data(barracksState == BarracksState.UNDER_CONSTRUCTION));
-            template.Add(new NPCSpawner.Data(barracksState == BarracksState.CONSTRUCTION_FINISHED, new Map<NPCRole, float> { { NPCRole.LUMBERJACK, 0f }, { NPCRole.WIZARD, 0f } }));
+            template.Add(new NPCSpawner.Data(barracksState == BarracksState.CONSTRUCTION_FINISHED, new Map<NPCRole, float> { { NPCRole.LUMBERJACK, SimulationSettings.LumberjackSpawningCooldown }, { NPCRole.WIZARD, SimulationSettings.WizardSpawningCooldown } }));
             template.Add(new TeamAssignment.Data(teamId));
 
             var permissions = Acl.Build()
@@ -194,18 +201,18 @@ namespace Assets.Gamelogic.EntityTemplate
             return template;
         }
 
-        public static SnapshotEntity CreateSimulationManagerTemplate()
+        public static SnapshotEntity CreatePlayerSpawnerTemplate()
         {
-            var template = new SnapshotEntity { Prefab = SimulationSettings.SimulationManagerEntityName };
+			var template = new SnapshotEntity { Prefab = SimulationSettings.PlayerSpawnerPrefabName };
             template.Add(new TransformComponent.Data(Coordinates.ZERO, 0));
             template.Add(new FSimAuthorityCheck.Data());
-            template.Add(new PlayerLifeCycle.Data(new Map<string, EntityId>()));
+            template.Add(new PlayerSpawning.Data());
 
             var permissions = Acl.Build()
                 .SetReadAccess(CommonRequirementSets.PhysicsOrVisual)
                 .SetWriteAccess<TransformComponent>(CommonRequirementSets.PhysicsOnly)
                 .SetWriteAccess<FSimAuthorityCheck>(CommonRequirementSets.PhysicsOnly)
-                .SetWriteAccess<PlayerLifeCycle>(CommonRequirementSets.PhysicsOnly);
+                .SetWriteAccess<PlayerSpawning>(CommonRequirementSets.PhysicsOnly);
 
             template.SetAcl(permissions);
 

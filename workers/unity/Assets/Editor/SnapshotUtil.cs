@@ -11,9 +11,9 @@ namespace Assets.Editor
     {
         private static readonly System.Random rand = new System.Random();
 
-        public static void AddSimulationManagerEntity(SnapshotBuilder snapshot)
+        public static void AddPlayerSpawner(SnapshotBuilder snapshot)
         {
-            var entity = EntityTemplateFactory.CreateSimulationManagerTemplate();
+			var entity = EntityTemplateFactory.CreatePlayerSpawnerTemplate();
             snapshot.Add(snapshot.GenerateId(), entity);
         }
 

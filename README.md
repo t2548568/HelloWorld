@@ -12,16 +12,17 @@ Copyright Improbable 2017
 
 ### Introduction
 
-This repository contains a "Hello, world!" project built with [SpatialOS](http://www.spatialos.com).
+This repository contains a demo project built with [SpatialOS](http://www.spatialos.com).
 It demonstrates how to use SpatialOS to build a large and compelling simulated world.
 
-The project serves as a starting point for the [Hello, world! SpatialOS Tutorial](https://spatialos.improbable.io/docs/reference/latest/tutorials/helloworld/hello-world).
+The project serves as a starting point for the [hands-on SpatialOS product demo](https://spatialos.improbable.io/docs/reference/latest/tutorials/helloworld/hello-world).
 
 The main documentation for SpatialOS can be found by clicking on [this link](https://spatialos.improbable.io/docs/reference/latest/index).
 
 #### To use the repository
 
 * Make sure you have access to SpatialOS
+* Install dependencies for [Windows](https://spatialos.improbable.io/docs/reference/latest/setup-spatialos/win) or [Mac](https://spatialos.improbable.io/docs/reference/latest/setup-spatialos/mac)
 * Clone the repo: `git clone https://github.com/spatialos/helloworld`
 * Move into the directory: `cd helloworld`
 * Build the project: `spatial worker build`

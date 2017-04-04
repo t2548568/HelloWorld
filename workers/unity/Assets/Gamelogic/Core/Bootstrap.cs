@@ -12,8 +12,6 @@ namespace Assets.Gamelogic.Core
     {
         public WorkerConfigurationData Configuration = new WorkerConfigurationData();
 
-        private bool readyToCollectClient;
-
         private void Start()
         {
             SpatialOS.ApplyConfiguration(Configuration);
@@ -30,27 +28,13 @@ namespace Assets.Gamelogic.Core
                 case WorkerPlatform.UnityClient:
                     Application.targetFrameRate = SimulationSettings.TargetFramerate;
                     SpatialOS.OnConnected += ClientPlayerSpawner.SpawnPlayer;
-                    readyToCollectClient = true;
                     break;
             }
         }
 
-        public bool IsReadyToConnectClient()
-        {
-            return readyToCollectClient;
-        }
-
-        public void AttemptClientConnect()
+        public void AttemptToConnectClient()
         {
             SpatialOS.Connect(gameObject);
-        }
-
-        private void OnApplicationQuit()
-        {
-            if (SpatialOS.IsConnected)
-            {
-                SpatialOS.Disconnect();
-            }
         }
     }
 }

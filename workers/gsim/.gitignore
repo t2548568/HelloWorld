@@ -1,5 +1,5 @@
 #Improbable GSim Ignores
-spatialos.*.build.json
+/build.json
 /.spatialos
 /generated/
 /project/

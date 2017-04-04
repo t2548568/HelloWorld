@@ -258,5 +258,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d504af5aa1f0ed4fad51a0dfde196c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseLocalPrefabs: 0
+  UseLocalPrefabs: 1
   LocalAssetDatabasePath: ../../build/assembly/
