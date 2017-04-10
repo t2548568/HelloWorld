@@ -56,7 +56,7 @@ namespace Assets.Gamelogic.Core
 
         // Entity counts
         public static int AttemptedTreeCount = 20000;
-        public static float TreeJitter = 10.0f;
+        public static float TreeJitter = 9.0f;
         public static int NPCCount = 40;
 
         // Component Updates
@@ -173,8 +173,8 @@ namespace Assets.Gamelogic.Core
 
         public static Coordinates[] TeamHQLocations =
         {
-            new Coordinates(-420.0, 0.0, -420.0),
-            new Coordinates(420.0, 0.0, 420.0)
+            new Coordinates(-300.0, 0.0, -275.0),
+            new Coordinates(230.0, 0.0, 170.0)
         };
 
         public static EntityId[] HQEntityIds =
