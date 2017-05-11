@@ -49,4 +49,5 @@ sysinfo.txt
 *.unitypackage
 
 .idea/
+.vs/
 /.spatialos

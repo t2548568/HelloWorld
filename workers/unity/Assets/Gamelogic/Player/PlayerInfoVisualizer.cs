@@ -8,6 +8,7 @@ using Improbable.Player;
 using Improbable.Unity;
 using Improbable.Unity.Visualizer;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Gamelogic.Player
 {
@@ -33,7 +34,7 @@ namespace Assets.Gamelogic.Player
             playerInfo.ComponentUpdated.Add(OnPlayerInfoUpdated);
             MainCameraController.SetTarget(gameObject);
             UIController.ShowUI();
-            StartCoroutine(TimerUtils.WaitAndPerform(1, SplashScreenController.HideSplashScreen));
+            SceneManager.UnloadSceneAsync(SimulationSettings.SplashScreenScene);
             Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         }
 

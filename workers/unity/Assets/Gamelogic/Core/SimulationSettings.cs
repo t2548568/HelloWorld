@@ -35,6 +35,16 @@ namespace Assets.Gamelogic.Core
         public static string TreeLayerName = "Tree";
         public static string BarrackLayerName = "Barrack";
 
+        // Build Process
+        public static readonly string UnityClientScene = "UnityClient";
+        public static readonly string UnityWorkerScene = "UnityWorker";
+        public static readonly string SplashScreenScene = "SplashScreen";
+        public static readonly string[] ClientScenes = { UnityClientScene, SplashScreenScene };
+        public static readonly string[] WorkerScenes = { UnityWorkerScene };
+        public static readonly string ClientDefaultActiveScene = UnityClientScene;
+        public static readonly string WorkerDefaultActiveScene = UnityWorkerScene;
+        public const string SceneDirectory = "Assets";
+
         // UI
         public static Color TransparentWhite = new Color(1f, 1f, 1f, 0.3f);
 
@@ -143,8 +153,8 @@ namespace Assets.Gamelogic.Core
         // Buildings
         public static int HQMaxHealth = 20;
         public static int BarracksMaxHealth = 10;
-        public static float LumberjackSpawningCooldown = 6000f;
-        public static float WizardSpawningCooldown = 30;
+        public static float LumberjackSpawningCooldown = 30f;
+        public static float WizardSpawningCooldown = 15;
         public static float SpawnOffsetFactor = 5f;
         public static float PlayerSpawnOffsetFactor = 48.0f;
         public static int HQStartingLumberjacksCount = 20;

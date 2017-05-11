@@ -9,6 +9,7 @@ using Improbable.Team;
 using Improbable.Unity.Core;
 using Improbable.Unity.Visualizer;
 using System.Collections.Generic;
+using Assets.Gamelogic.Team;
 using UnityEngine;
 
 namespace Assets.Gamelogic.Building
@@ -19,6 +20,7 @@ namespace Assets.Gamelogic.Building
         [Require] private TeamAssignment.Reader teamAssignment;
 
         private Coroutine spawnNPCsReduceCooldownCoroutine;
+        private string maxWizardsFlagName = "max_npc_wizards";
 
         private static readonly IDictionary<NPCRole, float> npcRolesToCooldownDictionary = new Dictionary<NPCRole, float>
         {
@@ -98,14 +100,60 @@ namespace Assets.Gamelogic.Building
             }
         }
 
+        private int GetLumberjackCount()
+        {
+            var lumberjacks = GameObject.FindGameObjectsWithTag("NPCLumberjack");
+            var count = 0;
+            for (var i = 0; i < lumberjacks.Length; ++i)
+            {
+                var teamAssignmentVisualizer = lumberjacks[i].GetComponent<TeamAssignmentVisualizerFSim>();
+                if (teamAssignmentVisualizer != null && teamAssignmentVisualizer.TeamId == teamAssignment.Data.teamId)
+                {
+                    ++count;
+                }
+            }
+            return count;
+        }
+
         private void SpawnLumberjack(Coordinates position)
         {
+            var lumberjackCount = GetLumberjackCount();
+            if (lumberjackCount >= 20)
+            {
+                return;
+            }
             var template = EntityTemplateFactory.CreateNPCLumberjackTemplate(position, teamAssignment.Data.teamId);
             SpatialOS.Commands.CreateEntity(npcSpawner, SimulationSettings.NPCPrefabName, template);
         }
 
+        private int GetWizardCount()
+        {
+            var wizards = GameObject.FindGameObjectsWithTag("NPCWizard");
+            var count = 0;
+            for (var i = 0; i < wizards.Length; ++i)
+            {
+                var teamAssignmentVisualizer = wizards[i].GetComponent<TeamAssignmentVisualizerFSim>();
+                if (teamAssignmentVisualizer != null && teamAssignmentVisualizer.TeamId == teamAssignment.Data.teamId)
+                {
+                    ++count;
+                }
+            }
+            return count;
+        }
+
         private void SpawnWizard(Coordinates position)
         {
+            var wizardCount = GetWizardCount();
+            int maxNpcWizards = 0;
+
+            if(SpatialOS.Connection.GetWorkerFlag("max_npc_wizards").HasValue )
+            {
+                maxNpcWizards = int.Parse(SpatialOS.Connection.GetWorkerFlag(maxWizardsFlagName).Value);
+            }
+            if (wizardCount >= maxNpcWizards)
+            {
+                return;
+            }
             var template = EntityTemplateFactory.CreateNPCWizardTemplate(position, teamAssignment.Data.teamId);
             SpatialOS.Commands.CreateEntity(npcSpawner, SimulationSettings.NPCWizardPrefabName, template);
         }

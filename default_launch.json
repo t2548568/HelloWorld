@@ -13,7 +13,12 @@
   "workers": [
     {
       "worker_type": "UnityWorker",
-      "flags" : [],
+      "flags" : [
+          {
+              "name": "max_npc_wizards",
+              "value": "50"
+          }
+      ],
       "load_balancing": {
         "dynamic_loadbalancer": {
           "worker_scaler_config": {
@@ -40,11 +45,20 @@
     },
     {
       "worker_type": "UnityClient",
-      "permissions": [
-        {
-          "all": {}
+      "permissions": [{
+        "entity_creation": {
+          "allow": false
+        },
+        "entity_deletion": {
+          "allow": false
+        },
+        "entity_query": {
+          "allow": true,
+          "components": [
+              "*"
+          ]
         }
-      ]
+      }]
     }
   ]
 }

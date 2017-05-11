@@ -4,9 +4,10 @@
 
 *****
 
-Copyright Improbable 2017
-* Link to docs/blog: https://spatialos.improbable.io/docs/reference/latest/tutorials/helloworld/hello-world.
-* GitHub Repository: https://github.com/spatialos/HelloWorld/
+*Copyright Improbable Worlds Ltd, 2017*
+
+- [Guide](https://spatialos.improbable.io/docs/reference/latest/getting-started/tour/intro)
+- *GitHub repository*: https://github.com/spatialos/HelloWorld/
 
 *****
 
@@ -17,7 +18,9 @@ It demonstrates how to use SpatialOS to build a large and compelling simulated w
 
 The project serves as a starting point for the [hands-on SpatialOS product demo](https://spatialos.improbable.io/docs/reference/latest/tutorials/helloworld/hello-world).
 
-The main documentation for SpatialOS can be found by clicking on [this link](https://spatialos.improbable.io/docs/reference/latest/index).
+The main documentation for SpatialOS can be found [here](https://spatialos.improbable.io/docs/reference/latest/index).
+
+If you run into problems, or want to give us feedback, please visit the [SpatialOS forums](https://forums.improbable.io/).
 
 #### To use the repository
 

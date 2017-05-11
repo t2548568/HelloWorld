@@ -2,6 +2,7 @@ using Improbable.Unity;
 using Improbable.Unity.Configuration;
 using Improbable.Unity.Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Gamelogic.Core
 {
@@ -14,6 +15,8 @@ namespace Assets.Gamelogic.Core
 
         private void Start()
         {
+            SceneManager.LoadScene(SimulationSettings.SplashScreenScene, LoadSceneMode.Additive);
+
             SpatialOS.ApplyConfiguration(Configuration);
 
             Time.fixedDeltaTime = 1.0f / SimulationSettings.FixedFramerate;
@@ -32,7 +35,7 @@ namespace Assets.Gamelogic.Core
             }
         }
 
-        public void AttemptToConnectClient()
+        public void ConnectToClient()
         {
             SpatialOS.Connect(gameObject);
         }

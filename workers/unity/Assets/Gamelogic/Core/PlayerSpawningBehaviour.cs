@@ -1,4 +1,3 @@
-using Assets.Gamelogic.Core;
 using Assets.Gamelogic.EntityTemplate;
 using Improbable;
 using Improbable.Core;
@@ -10,7 +9,7 @@ using Improbable.Unity.Visualizer;
 using Improbable.Worker;
 using UnityEngine;
 
-namespace Assets.Gamelogic.Global
+namespace Assets.Gamelogic.Core
 {
     [WorkerType(WorkerPlatform.UnityWorker)]
     public class PlayerSpawningBehaviour : MonoBehaviour
