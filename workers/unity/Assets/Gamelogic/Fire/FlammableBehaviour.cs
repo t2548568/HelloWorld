@@ -17,7 +17,7 @@ namespace Assets.Gamelogic.Fire
 
         public bool IsOnFire { get { return flammable != null && flammable.Data.isOnFire; } }
         private Collider[] nearbyColliders = new Collider[8];
-        private Coroutine spreadFlamesCoroutine;
+        private Coroutine spreadFireCoroutine;
 
         private IFlammable[] flammableInterfaces;
 
@@ -34,7 +34,7 @@ namespace Assets.Gamelogic.Fire
 
             if (flammable.Data.isOnFire)
             {
-                StartFlameSpread();
+                StartSpreadingFire();
             }
         }
 
@@ -44,7 +44,7 @@ namespace Assets.Gamelogic.Fire
             flammable.CommandReceiver.OnExtinguish.DeregisterResponse();
             flammable.CommandReceiver.OnSetCanBeIgnited.DeregisterResponse();
 
-            StopFlameSpread();
+            StopSpreadingFire();
         }
 
         private Nothing OnIgnite(Nothing request, ICommandCallerInfo callerinfo)
@@ -69,8 +69,8 @@ namespace Assets.Gamelogic.Fire
         {
             if (!flammable.Data.isOnFire && flammable.Data.canBeIgnited)
             {
-                IgniteUpdate();
-                StartFlameSpread();
+                SendIgniteUpdate();
+                StartSpreadingFire();
                 for (var i = 0; i < flammableInterfaces.Length; i++)
                 {
                     flammableInterfaces[i].OnIgnite();
@@ -82,8 +82,8 @@ namespace Assets.Gamelogic.Fire
         {
             if (flammable.Data.isOnFire)
             {
-                ExtinguishUpdate(canBeIgnited);
-                StopFlameSpread();
+                SendExtinguishUpdate(canBeIgnited);
+                StopSpreadingFire();
                 for (var i = 0; i < flammableInterfaces.Length; i++)
                 {
                     flammableInterfaces[i].OnExtinguish();
@@ -99,7 +99,7 @@ namespace Assets.Gamelogic.Fire
             }
         }
 
-        public void SelfIgnite(IComponentWriter writer)
+        private void SelfIgnite(IComponentWriter writer)
         {
             if (flammable == null)
             {
@@ -129,20 +129,20 @@ namespace Assets.Gamelogic.Fire
             SetCanBeIgnited(canBeIgnited);
         }
 
-        private void StartFlameSpread()
+        private void StartSpreadingFire()
         {
-            spreadFlamesCoroutine = StartCoroutine(TimerUtils.WaitAndPerform(SimulationSettings.FireSpreadInterval, SpreadFlame));
+            spreadFireCoroutine = StartCoroutine(TimerUtils.WaitAndPerform(SimulationSettings.FireSpreadInterval, SpreadFire));
         }
 
-        private void StopFlameSpread()
+        private void StopSpreadingFire()
         {
-            if (spreadFlamesCoroutine != null)
+            if (spreadFireCoroutine != null)
             {
-                StopCoroutine(spreadFlamesCoroutine);
+                StopCoroutine(spreadFireCoroutine);
             }
         }
 
-        private void SpreadFlame()
+        private void SpreadFire()
         {
             if (flammable == null)
             {
@@ -153,35 +153,27 @@ namespace Assets.Gamelogic.Fire
             for (var i = 0; i < count; i++)
             {
                 var otherFlammable = nearbyColliders[i].transform.GetComponentInParent<FlammableDataVisualizer>();
-                if (otherFlammable == null || !otherFlammable.canBeIgnited)
+                if (otherFlammable != null && otherFlammable.canBeIgnited)
                 {
-                    continue;
+                    // Cache local ignitable value, to avoid duplicated ignitions within 1 frame on an UnityWorker
+                    otherFlammable.SetLocalCanBeIgnited(false);
+                    otherFlammable.GetComponent<FlammableBehaviour>().SelfIgnite(flammable);
                 }
-
-                // Cache local ignitable value, to avoid duplicated ignitions within 1 frame on an FSim
-                otherFlammable.SetLocalCanBeIgnited(false);
-                otherFlammable.GetComponent<FlammableBehaviour>().SelfIgnite(flammable);
             }
         }
 
-        private void IgniteUpdate()
+        private void SendIgniteUpdate()
         {
-            if (!flammable.Data.isOnFire)
-            {
-                var update = new Flammable.Update();
-                update.SetIsOnFire(true).SetCanBeIgnited(false);
-                flammable.Send(update);
-            }
+            var update = new Flammable.Update();
+            update.SetIsOnFire(true).SetCanBeIgnited(false);
+            flammable.Send(update);
         }
 
-        private void ExtinguishUpdate(bool canBeIgnited)
+        private void SendExtinguishUpdate(bool canBeIgnited)
         {
-            if (flammable.Data.isOnFire)
-            {
-                var update = new Flammable.Update();
-                update.SetIsOnFire(false).SetCanBeIgnited(canBeIgnited);
-                flammable.Send(update);
-            }
+            var update = new Flammable.Update();
+            update.SetIsOnFire(false).SetCanBeIgnited(canBeIgnited);
+            flammable.Send(update);
         }
     }
 }

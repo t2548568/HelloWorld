@@ -15,15 +15,13 @@ type SetCanBeIgnitedRequest {
   bool can_be_ignited = 1;
 }
 
-type FlammableData {
+component Flammable {
+  id = 1400;
+
   bool is_on_fire = 1;
   bool can_be_ignited = 2;
   FireEffectType effect_type = 3;
-}
 
-component Flammable {
-  id = 1400;
-  data FlammableData;
   command improbable.core.Nothing ignite(improbable.core.Nothing);
   command improbable.core.Nothing extinguish(ExtinguishRequest);
   command improbable.core.Nothing set_can_be_ignited(SetCanBeIgnitedRequest);

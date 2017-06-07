@@ -87,7 +87,7 @@ namespace Assets.Gamelogic.NPC.LumberJack
 
         private void OnStockpileResponse(ICommandCallbackResponse<Nothing> response, int resourcesToAdd)
         {
-            if (response.StatusCode == StatusCode.Failure)
+            if (response.StatusCode != StatusCode.Success)
             {
                 Debug.LogError("NPC failed to receive Stockpile response");
             }
