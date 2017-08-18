@@ -26,8 +26,8 @@ If you run into problems, or want to give us feedback, please visit the [Spatial
 
 * Make sure you have access to SpatialOS
 * Install dependencies for [Windows](https://spatialos.improbable.io/docs/reference/latest/setup-spatialos/win) or [Mac](https://spatialos.improbable.io/docs/reference/latest/setup-spatialos/mac)
-* Clone the repo: `git clone https://github.com/spatialos/wizards`
-* Move into the directory: `cd wizards`
+* Clone the repo: `git clone https://github.com/spatialos/HelloWorld`
+* Move into the directory: `cd HelloWorld`
 * Build the project: `spatial worker build`
 * Run: `spatial local launch`
 * Connect multiple player clients: `spatial local worker launch UnityClient default`
