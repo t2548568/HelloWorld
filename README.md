@@ -1,3 +1,5 @@
+# This repository is deprecated as of SpatialOS 11, please use https://github.com/spatialos/Wizards
+
 # Wizards! (SpatialOS)
 
 ![Wizards Logo](wizards-logo.jpg)
