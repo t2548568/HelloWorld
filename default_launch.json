@@ -1,6 +1,6 @@
 {
   "template": "small",
-  "world": {
+  ----"world": {
     "chunkEdgeLengthMeters": 50,
     "snapshots": {
       "snapshotWritePeriodSeconds": 0
